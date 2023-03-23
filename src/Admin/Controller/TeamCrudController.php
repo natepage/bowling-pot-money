@@ -1,0 +1,28 @@
+<?php
+declare(strict_types=1);
+
+namespace App\Admin\Controller;
+
+use App\Entity\Team;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CurrencyField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+
+final class TeamCrudController extends AbstractCrudController
+{
+    public static function getEntityFqcn(): string
+    {
+        return Team::class;
+    }
+
+    public function configureFields(string $pageName): iterable
+    {
+        yield TextField::new('title');
+
+        yield CurrencyField::new('currency')
+            ->showCode(true)
+            ->showName(false)
+            ->showSymbol(false);
+
+        yield from parent::configureFields($pageName);
+    }
+}

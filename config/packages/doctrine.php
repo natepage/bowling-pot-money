@@ -2,12 +2,17 @@
 
 declare(strict_types=1);
 
+use App\Infrastructure\Doctrine\Dbal\Type\CarbonImmutableType;
+use Doctrine\DBAL\Types\Types;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->extension('doctrine', [
         'dbal' => [
             'url' => '%env(resolve:DATABASE_URL)%',
+            'types' => [
+                Types::DATETIME_IMMUTABLE => CarbonImmutableType::class,
+            ],
         ],
         'orm' => [
             'auto_generate_proxy_classes' => true,

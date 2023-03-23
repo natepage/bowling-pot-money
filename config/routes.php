@@ -6,11 +6,6 @@ use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator->import([
-        'path' => '../src/Controller/',
-        'namespace' => 'App\Controller',
-    ], 'attribute');
-
-    $routingConfigurator->import([
         'path' => '../src/Admin/Controller/',
         'namespace' => 'App\Admin\Controller',
     ], 'attribute');
