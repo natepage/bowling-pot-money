@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Controller;
 
+use App\Entity\Achievement;
 use App\Entity\Team;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -28,6 +29,7 @@ final class DashboardController extends AbstractDashboardController
         yield from parent::configureMenuItems();
 
         yield MenuItem::linkToCrud('Teams', 'fa fa-people-group', Team::class);
+        yield MenuItem::linkToCrud('Achievements', 'fa fa-people-group', Achievement::class);
     }
 
     #[Route(path: '/admin', name: 'admin_index')]

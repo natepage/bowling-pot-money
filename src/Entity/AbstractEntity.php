@@ -25,7 +25,9 @@ abstract class AbstractEntity
 
     public function __toString(): string
     {
-        return $this->id;
+        $toString = $this->toString();
+
+        return $toString ? \sprintf('%s | %s', $toString, $this->id) : $this->id;
     }
 
     public function getCreatedAt(): ?CarbonImmutable
@@ -55,4 +57,6 @@ abstract class AbstractEntity
 
         $this->updatedAt = $dateTime;
     }
+
+    abstract protected function toString(): ?string;
 }

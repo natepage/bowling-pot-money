@@ -3,22 +3,22 @@
 ## Security and Admin
 
 - [ ] Use Auth0 for authentication
-- [ ] Use EasyAdmin for admin interface
+- [X] Use EasyAdmin for admin interface
 - [ ] Have different roles (Super Admin, Admin, User)
 
 ## Teams
 
-- [ ] Manage teams from admin
+- [X] Manage teams from admin
 - [ ] Users can belong to many teams
-- [ ] Currency is set at team level
+- [X] Currency is set at team level
 - [ ] Should be able to duplicate Achievements from another Team
 - [ ] Have different team roles (who can withdraw money, etc) 
 
 ## Achievements
 
-- [ ] Achievement belong to one Team
-- [ ] Achievement cost can be -/+
-- [ ] Achievement have a Currency, and it has to match their Team Currency
+- [X] Achievement belong to one Team
+- [X] Achievement cost can be -/+
+- [X] Achievement have a Currency, and it has to match their Team Currency
 
 ## Financials
 

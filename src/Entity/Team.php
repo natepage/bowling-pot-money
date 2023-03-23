@@ -7,33 +7,38 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-final class Team extends AbstractEntity
+class Team extends AbstractEntity
 {
     #[ORM\Column(type: Types::STRING)]
-    private ?string $currency = null;
+    private string $currency;
 
     #[ORM\Column(type: Types::STRING)]
-    private ?string $title = null;
+    private string $title;
 
-    public function getCurrency(): ?string
+    public function getCurrency(): string
     {
         return $this->currency;
     }
 
-    public function setCurrency(?string $currency): Team
+    public function setCurrency(string $currency): Team
     {
         $this->currency = $currency;
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    public function setTitle(?string $title): Team
+    public function setTitle(string $title): Team
     {
         $this->title = $title;
         return $this;
+    }
+
+    protected function toString(): ?string
+    {
+        return $this->title ?? null;
     }
 }
