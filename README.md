@@ -1,5 +1,10 @@
 # Bowling Coke Money
 
+## Tech Foundation
+
+- [ ] Integrate with bugsnag
+- [ ] Build FE with Symfony UX and Turbo
+
 ## Security and Admin
 
 - [ ] Use Auth0 for authentication
@@ -31,3 +36,5 @@
 
 - [ ] Session is a way to represent league nights, group User and Achievements occurrences
 - [ ] Session also allow to capture bowling games, so we can build User/Team pair stats
+- [ ] Session can be opened/closed
+- [ ] Session must be opened to add Achievement occurrence against User/Team pair
