@@ -9,4 +9,13 @@ return static function (RoutingConfigurator $routingConfigurator): void {
         'path' => '../src/Admin/Controller/',
         'namespace' => 'App\Admin\Controller',
     ], 'attribute');
+
+    $routingConfigurator->import([
+        'path' => '../src/Infrastructure/Security/Auth0/',
+        'namespace' => 'App\Infrastructure\Security\Auth0',
+    ], 'attribute');
+
+    $routingConfigurator
+        ->add('admin_logout', '/admin/logout')
+        ->methods(['GET']);
 };

@@ -7,7 +7,7 @@
 
 ## Security and Admin
 
-- [ ] Use Auth0 for authentication
+- [X] Use Auth0 for authentication
 - [X] Use EasyAdmin for admin interface
 - [ ] Have different roles (Super Admin, Admin, User)
 
@@ -17,7 +17,8 @@
 - [ ] Users can belong to many teams
 - [X] Currency is set at team level
 - [ ] Should be able to duplicate Achievements from another Team
-- [ ] Have different team roles (who can withdraw money, etc) 
+- [ ] Have different team roles (who can withdraw money, etc)
+- [ ] Create invitation link for Team per email (once-off, expiry, support existing user)
 
 ## Achievements
 

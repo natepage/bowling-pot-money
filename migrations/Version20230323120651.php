@@ -14,7 +14,6 @@ final class Version20230323120651 extends AbstractMigration
 
     public function rollback(): void
     {
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('DROP TABLE team');
     }
 }
