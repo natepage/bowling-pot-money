@@ -16,7 +16,6 @@ final class Version20230323124014 extends AbstractMigration
 
     public function rollback(): void
     {
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE achievement DROP CONSTRAINT FK_96737FF1296CD8AE');
         $this->addSql('DROP TABLE achievement');
     }

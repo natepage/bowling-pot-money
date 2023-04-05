@@ -2,42 +2,40 @@
 
 declare(strict_types=1);
 
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use App\Infrastructure\Security\Auth0\Auth0Authenticator;
+use App\Infrastructure\Security\Auth0\Auth0Entrypoint;
+use App\Infrastructure\Security\Auth0\Auth0UserProvider;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Config\SecurityConfig;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $containerConfigurator->extension('security', [
-        'password_hashers' => [
-            PasswordAuthenticatedUserInterface::class => 'auto',
-        ],
-        'providers' => [
-            'users_in_memory' => [
-                'memory' => null,
-            ],
-        ],
-        'firewalls' => [
-            'dev' => [
-                'pattern' => '^/(_(profiler|wdt)|css|images|js)/',
-                'security' => false,
-            ],
-            'main' => [
-                'lazy' => true,
-                'provider' => 'users_in_memory',
-            ],
-        ],
-        'access_control' => null,
-    ]);
+return static function (SecurityConfig $config, string $env): void {
+    $config->passwordHasher(PasswordAuthenticatedUserInterface::class)
+        ->algorithm('auto');
 
-    if ($containerConfigurator->env() === 'test') {
-        $containerConfigurator->extension('security', [
-            'password_hashers' => [
-                PasswordAuthenticatedUserInterface::class => [
-                    'algorithm' => 'auto',
-                    'cost' => 4,
-                    'time_cost' => 3,
-                    'memory_cost' => 10,
-                ],
-            ],
-        ]);
+    $config->provider('auth0')
+        ->id(Auth0UserProvider::class);
+
+    $config->firewall('dev')
+        ->pattern('^/(_(profiler|wdt)|css|images|js)/')
+        ->security(false);
+
+    $config->firewall('admin')
+        ->pattern('^/admin')
+        ->customAuthenticators([Auth0Authenticator::class])
+        ->entryPoint(Auth0Entrypoint::class)
+        ->provider('auth0')
+        ->logout()
+            ->path('admin_logout');
+
+    $config->accessControl()
+        ->path('^/admin')
+        ->roles('ROLE_ADMIN');
+
+    if ($env === 'test') {
+        $config->passwordHasher(PasswordAuthenticatedUserInterface::class)
+            ->algorithm('auto')
+            ->cost(4)
+            ->timeCost(3)
+            ->memoryCost(10);
     }
 };
