@@ -28,10 +28,6 @@ final class Auth0UserProvider implements UserProviderInterface
             throw new UserNotFoundException('User token has expired');
         }
 
-        if ($user->getDbUser() !== null) {
-            return $user;
-        }
-
         // Create db user if first time
         $dbUser = $this->userRepository->findOneByEmail($user->getEmail());
         if ($dbUser === null) {

@@ -9,6 +9,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'app_user')]
+#[ORM\UniqueConstraint(columns: ['email'])]
 class User extends AbstractEntity implements UserInterface
 {
     #[ORM\Column(type: Types::STRING)]
