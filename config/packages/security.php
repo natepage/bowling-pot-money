@@ -19,8 +19,8 @@ return static function (SecurityConfig $config, string $env): void {
         ->pattern('^/(_(profiler|wdt)|css|images|js)/')
         ->security(false);
 
-    $config->firewall('admin')
-        ->pattern('^/admin')
+    $config->firewall('main')
+        ->pattern('^/')
         ->customAuthenticators([Auth0Authenticator::class])
         ->entryPoint(Auth0Entrypoint::class)
         ->provider('auth0')
@@ -30,6 +30,10 @@ return static function (SecurityConfig $config, string $env): void {
     $config->accessControl()
         ->path('^/admin')
         ->roles('ROLE_ADMIN');
+
+    $config->accessControl()
+        ->path('^/')
+        ->roles('ROLE_USER');
 
     if ($env === 'test') {
         $config->passwordHasher(PasswordAuthenticatedUserInterface::class)

@@ -9,4 +9,9 @@ return static function (RoutingConfigurator $routingConfigurator): void {
         'path' => '../src/Admin/Controller/',
         'namespace' => 'App\Admin\Controller',
     ], 'attribute');
+
+    $routingConfigurator->import([
+        'path' => '../src/Team/Controller/',
+        'namespace' => 'App\Team\Controller',
+    ], 'attribute');
 };
