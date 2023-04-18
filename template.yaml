@@ -36,4 +36,4 @@ Resources:
 Outputs:
   BowlingCokeMoneyWebsiteUrl:
     Description: 'URL of our function in the *Prod* environment'
-    Value: !Sub 'https://${ServerlessApi}.execute-api.${AWS::Region}.amazonaws.com/'
+    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/'
