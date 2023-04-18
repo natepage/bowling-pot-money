@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Globals:
+  Function:
+    Environment:
+      Variables:
+        APP_ENV: prod
+        APP_RUNTIME: Runtime\Bref\Runtime
+        BREF_LOOP_MAX: 100
+
+Resources:
+  Website:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: 'Symfony-Serverless'
+      CodeUri: .
+      Handler: public/index.php
+      Timeout: 30 # in seconds (API Gateway has a timeout of 30 seconds)
+      MemorySize: 512
+      Runtime: provided.al2
+      Layers:
+        - 'arn:aws:lambda:ap-southeast-2:534081306603:layer:php-82-fpm:33'
+      Events:
+        HttpRoot:
+          Type: HttpApi
+          Properties:
+            Path: /
+            Method: ANY
+
+Outputs:
+  DemoApi:
+    Description: 'URL of our function in the *Prod* environment'
+    Value: !Sub 'https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/'
