@@ -5,13 +5,16 @@ declare(strict_types=1);
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
-    $routingConfigurator->import([
-        'path' => '../src/Admin/Controller/',
-        'namespace' => 'App\Admin\Controller',
-    ], 'attribute');
+    $imports = [
+        'App\Admin\Controller' => '../src/Admin/Controller/',
+        'App\Debug\Controller' => '../src/Debug/Controller/',
+        'App\Team\Controller' => '../src/Team/Controller/',
+    ];
 
-    $routingConfigurator->import([
-        'path' => '../src/Team/Controller/',
-        'namespace' => 'App\Team\Controller',
-    ], 'attribute');
+    foreach ($imports as $namespace => $path) {
+        $routingConfigurator->import([
+            'path' => $path,
+            'namespace' => $namespace,
+        ], 'attribute');
+    }
 };
