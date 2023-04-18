@@ -1,6 +1,6 @@
 {
     "doctrine/doctrine-bundle": {
-        "version": "2.8",
+        "version": "2.9",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
@@ -36,7 +36,7 @@
         }
     },
     "nyholm/psr7": {
-        "version": "1.5",
+        "version": "1.6",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
