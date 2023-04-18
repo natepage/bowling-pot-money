@@ -3,12 +3,16 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Contract\ActorAwareInterface;
+use App\Entity\Mixin\ActorAwareTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-class Team extends AbstractEntity
+class Team extends AbstractEntity implements ActorAwareInterface
 {
+    use ActorAwareTrait;
+
     #[ORM\Column(type: Types::STRING)]
     private string $currency;
 

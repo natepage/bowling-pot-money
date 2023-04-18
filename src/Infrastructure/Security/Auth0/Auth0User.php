@@ -55,7 +55,7 @@ class Auth0User implements UserInterface
      */
     public function getRoles(): array
     {
-        return ['ROLE_ADMIN'];
+        return ['ROLE_ADMIN', 'ROLE_USER'];
     }
 
     public function eraseCredentials(): void

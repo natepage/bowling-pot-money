@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use App\Infrastructure\Doctrine\Dbal\Type\CarbonImmutableType;
+use App\Infrastructure\Doctrine\Dbal\Type\TeamInviteStatusType;
+use App\Infrastructure\Doctrine\Dbal\Type\TeamMemberAccessLevelType;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -12,6 +14,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'url' => '%env(resolve:DATABASE_URL)%',
             'types' => [
                 Types::DATETIME_IMMUTABLE => CarbonImmutableType::class,
+                TeamInviteStatusType::NAME => TeamInviteStatusType::class,
+                TeamMemberAccessLevelType::NAME => TeamMemberAccessLevelType::class,
             ],
         ],
         'orm' => [

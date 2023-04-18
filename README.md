@@ -14,11 +14,13 @@
 ## Teams
 
 - [X] Manage teams from admin
-- [ ] Users can belong to many teams
+- [X] Users can belong to many teams
 - [X] Currency is set at team level
 - [ ] Should be able to duplicate Achievements from another Team
 - [ ] Have different team roles (who can withdraw money, etc)
-- [ ] Create invitation link for Team per email (once-off, expiry, support existing user)
+- [X] Create invitation link for Team per email (once-off, expiry, support existing user)
+- [ ] Automatic expiry for invitation links
+- [ ] Send invite emails async
 
 ## Achievements
 

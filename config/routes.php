@@ -11,11 +11,7 @@ return static function (RoutingConfigurator $routingConfigurator): void {
     ], 'attribute');
 
     $routingConfigurator->import([
-        'path' => '../src/Infrastructure/Security/Auth0/',
-        'namespace' => 'App\Infrastructure\Security\Auth0',
+        'path' => '../src/Team/Controller/',
+        'namespace' => 'App\Team\Controller',
     ], 'attribute');
-
-    $routingConfigurator
-        ->add('admin_logout', '/admin/logout')
-        ->methods(['GET']);
 };
