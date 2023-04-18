@@ -37,13 +37,12 @@ Resources:
             Method: ANY
       Policies:
         - Statement:
-            - Sid: SSMGetParameterPolicy
-              Effect: Allow
-              Action:
-                - 'ssm:GetParameters'
-                - 'ssm:GetParameter'
-              Resource:
-                - 'arn:aws:ssm:ap-southeast-2:${AWS::AccountId}:parameter/app/*'
+          - Sid: SSMGetParameterPolicy
+            Effect: Allow
+            Action:
+              - 'ssm:GetParameters'
+              - 'ssm:GetParameter'
+            Resource: 'arn:aws:ssm:ap-southeast-2:${AWS::AccountId}:parameter/app/*'
 
 Outputs:
   BowlingCokeMoneyWebsiteUrl:
