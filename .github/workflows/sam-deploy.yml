@@ -37,4 +37,10 @@ jobs:
                     aws-region: 'ap-southeast-2'
 
             -   name: Deploy
-                run: sam deploy --stack-name BowlingCokeMoney --resolve-s3 --no-confirm-changeset
+                run: |
+                    sam deploy \
+                        --no-confirm-changeset \
+                        --stack-name BowlingCokeMoney \
+                        --resolve-s3 \
+                        --capabilities CAPABILITY_IAM \
+                        --region ap-southeast-2
