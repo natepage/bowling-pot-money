@@ -23,9 +23,14 @@ Resources:
         - 'arn:aws:lambda:ap-southeast-2:534081306603:layer:php-82-fpm:33'
       Events:
         HttpRoot:
-          Type: HttpApi
+          Type: Api
           Properties:
             Path: /
+            Method: ANY
+        HttpSubPaths:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
             Method: ANY
 
 Outputs:
