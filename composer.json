@@ -9,6 +9,7 @@
         "ext-iconv": "*",
         "auth0/auth0-php": "^8.5",
         "bref/bref": "^2.0",
+        "bref/secrets-loader": "^1.0",
         "doctrine/doctrine-bundle": "^2.8",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.14",
