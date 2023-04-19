@@ -184,6 +184,7 @@ Resources:
     Type: AWS::RDS::DBCluster
     Properties:
       Engine: aurora-postgresql
+      Port: 5432
       DBClusterIdentifier: bowling-coke-money-serverless
       DBSubnetGroupName: "bowling-coke-money-serverless-db-subnet-group"
       EngineVersion: 15.2
