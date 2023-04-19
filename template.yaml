@@ -78,7 +78,7 @@ Resources:
     Properties:
       VpcId: !Ref VPC
       CidrBlock: 10.0.128.0/20
-      AvailabilityZone: ap-southeast-2a
+      AvailabilityZone: !Sub ${AWS::Region}a
       Tags:
         - Key: Name
           Value: !Sub ${AWS::StackName}-PublicSubnetA
@@ -94,7 +94,7 @@ Resources:
     Properties:
       VpcId: !Ref VPC
       CidrBlock: 10.0.0.0/19
-      AvailabilityZone: ap-southeast-2a
+      AvailabilityZone: !Sub ${AWS::Region}a
       Tags:
         - Key: Name
           Value: !Sub ${AWS::StackName}-PrivateSubnetA
@@ -111,7 +111,7 @@ Resources:
     Properties:
       VpcId: !Ref VPC
       CidrBlock: 10.0.32.0/19
-      AvailabilityZone: ap-southeast-2b
+      AvailabilityZone: !Sub ${AWS::Region}b
       Tags:
         - Key: Name
           Value: !Sub ${AWS::StackName}-PrivateSubnetB
@@ -178,8 +178,8 @@ Resources:
   DatabaseSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
     Properties:
-      DBSubnetGroupDescription: "Subnets available for the RDS DB Instance"
-      DBSubnetGroupName: "bowling-coke-money-serverless-db-subnet-group"
+      DBSubnetGroupDescription: !Sub "DB SubnetGroup for ${AWS::StackName}"
+      DBSubnetGroupName: !Sub "${AWS::StackName}-Serverless-DBSubnetGroup"
       SubnetIds:
         - !Ref PrivateSubnetA
         - !Ref PrivateSubnetB
@@ -189,8 +189,8 @@ Resources:
     Properties:
       Engine: aurora-postgresql
       Port: 5432
-      DBClusterIdentifier: bowling-coke-money-serverless
-      DBSubnetGroupName: "bowling-coke-money-serverless-db-subnet-group"
+      DBClusterIdentifier: !Sub "${AWS::StackName}-Serverless"
+      DBSubnetGroupName: !Ref DatabaseSubnetGroup
       EngineVersion: 15.2
       MasterUsername: postgres
       MasterUserPassword:
@@ -240,5 +240,5 @@ Resources:
 
 Outputs:
   BowlingCokeMoneyWebsiteUrl:
-    Description: 'URL of our function in the *Prod* environment'
+    Description: 'URL of our function'
     Value: !Sub 'https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/'
