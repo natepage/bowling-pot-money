@@ -19,51 +19,9 @@ Resources:
   VPC:
     Type: AWS::EC2::VPC
     Properties:
-      CidrBlock: 10.0.0.0/25
+      CidrBlock: 10.0.0.0/16
       EnableDnsSupport: "true"
       EnableDnsHostnames: "true"
-
-  NatSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: "Security Group for the NAT Instance"
-      SecurityGroupIngress:
-      # http & https traffic
-      - CidrIp: 10.0.0.32/28
-        FromPort: 80
-        ToPort: 80
-        IpProtocol: tcp
-      - CidrIp: 10.0.0.32/28
-        FromPort: 443
-        ToPort: 443
-        IpProtocol: tcp
-      #ssh access
-      - CidrIp: 0.0.0.0/0
-        FromPort: 22
-        ToPort: 22
-        IpProtocol: tcp
-      # routing
-      - CidrIp: 10.0.0.32/28
-        IpProtocol: icmp
-        FromPort: -1
-        ToPort: -1
-      VpcId: !Ref VPC
-
-  LambdaSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: "Security Group for Lambda Functions"
-      SecurityGroupIngress:
-        # http & https traffic
-        - CidrIp: 10.0.0.16/28
-          FromPort: 80
-          ToPort: 80
-          IpProtocol: tcp
-        - CidrIp: 10.0.0.16/28
-          FromPort: 443
-          ToPort: 443
-          IpProtocol: tcp
-      VpcId: !Ref VPC
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
@@ -75,53 +33,10 @@ Resources:
       VpcId: !Ref VPC
       InternetGatewayId: !Ref InternetGateway
 
-  PublicSubnet:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref VPC
-      CidrBlock: 10.0.0.16/28
-      AvailabilityZone: !Select
-        - 0
-        - Fn::GetAZs: !Ref "AWS::Region"
-      Tags:
-        - Key: Name
-          Value: !Sub ${AWS::StackName}-Public
-
-  PrivateSubnetA:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref VPC
-      CidrBlock: 10.0.0.32/28
-      AvailabilityZone: ap-southeast-2a
-
-  PrivateSubnetB:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref VPC
-      CidrBlock: 10.0.0.64/28
-      AvailabilityZone: ap-southeast-2b
-
-  NATInstance:
-    Type: AWS::EC2::Instance
-    Properties:
-      InstanceType: t2.nano
-      ImageId: ami-0c2cb2ab4d9226c27
-      SourceDestCheck: false
-      #KeyName: ryan.pem
-      NetworkInterfaces:
-        - SubnetId: !Ref PublicSubnet
-          AssociatePublicIpAddress: true
-          DeviceIndex: 0
-          GroupSet:
-            - !Ref NatSecurityGroup
-
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref VPC
-      Tags:
-        -   Key: Name
-            Value: Public
 
   PublicRoute:
     Type: AWS::EC2::Route
@@ -131,19 +46,10 @@ Resources:
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref InternetGateway
 
-  PublicSubnetARouteTableAssociation:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      SubnetId: !Ref PublicSubnet
-      RouteTableId: !Ref PublicRouteTable
-
   PrivateRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref VPC
-      Tags:
-        -   Key: Name
-            Value: Private
 
   PrivateRoute:
     Type: AWS::EC2::Route
@@ -153,17 +59,121 @@ Resources:
       DestinationCidrBlock: 0.0.0.0/0
       InstanceId: !Ref NATInstance
 
+  # ------ Network - AZ 1 ------
+  PublicSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.128.0/20
+      AvailabilityZone: ap-southeast-2a
+
+  PublicSubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnetA
+      RouteTableId: !Ref PublicRouteTable
+
+  PrivateSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.0.0/19
+      AvailabilityZone: ap-southeast-2a
+
   PrivateSubnetARouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref PrivateSubnetA
-      RouteTableId: !Ref PrivateRouteTable
+      RouteTableId: !Ref PublicRouteTable
+
+  # ------ Network - AZ 2 ------
+  PublicSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.144.0/20
+      AvailabilityZone: ap-southeast-2b
+
+  PublicSubnetBRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet
+      RouteTableId: !Ref PublicRouteTable
+
+  PrivateSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.32.0/19
+      AvailabilityZone: ap-southeast-2b
 
   PrivateSubnetBRouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref PrivateSubnetB
-      RouteTableId: !Ref PrivateRouteTable
+      RouteTableId: !Ref PublicRouteTable
+
+  # ------ Network - Security Groups ------
+  NatSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Security Group for the NAT Instance"
+      SecurityGroupIngress:
+        # http and routing PrivateSubnetA
+        - CidrIp: 10.0.0.0/19
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+        - CidrIp: 10.0.0.0/19
+          IpProtocol: icmp
+          FromPort: -1
+          ToPort: -1
+        # http and routing PrivateSubnetB
+        - CidrIp: 10.0.32.0/19
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+        - CidrIp: 10.0.32.0/19
+          IpProtocol: icmp
+          FromPort: -1
+          ToPort: -1
+      VpcId: !Ref VPC
+
+  LambdaSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Security Group for Lambda Functions"
+      SecurityGroupIngress:
+        # http PublicSubnetA
+        - CidrIp: 10.0.128.0/20
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+        # http PublicSubnetB
+        - CidrIp: 10.0.144.0/20
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+      VpcId: !Ref VPC
+
+  # ------ Network - NAT Gateway ------
+  NATInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.nano
+      ImageId: ami-0c2cb2ab4d9226c27
+      SourceDestCheck: false
+      NetworkInterfaces:
+        - SubnetId: !Ref PublicSubnetA
+          AssociatePublicIpAddress: true
+          DeviceIndex: 0
+          GroupSet:
+            - !Ref NatSecurityGroup
+        - SubnetId: !Ref PublicSubnetB
+          AssociatePublicIpAddress: true
+          DeviceIndex: 0
+          GroupSet:
+            - !Ref NatSecurityGroup
 
   # ------ Database ------
   DatabaseSubnetGroup:
