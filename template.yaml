@@ -187,7 +187,7 @@ Resources:
           GroupSet:
             - !Ref NatSecurityGroup
         - SubnetId: !Ref PublicSubnetB
-          DeviceIndex: 0
+          DeviceIndex: 1
           GroupSet:
             - !Ref NatSecurityGroup
 
