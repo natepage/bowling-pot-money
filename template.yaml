@@ -1,6 +1,12 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 
+Parameters:
+  DatabaseMasterUserPassword:
+    Type: String
+    NoEcho: true
+    Description: The database master user password
+
 Globals:
   Function:
     Environment:
@@ -193,6 +199,8 @@ Resources:
       DBSubnetGroupName: "bowling-coke-money-serverless-db-subnet-group"
       EngineVersion: 15.2
       MasterUsername: postgres
+      MasterUserPassword:
+        Ref: DatabaseMasterUserPassword
       ServerlessV2ScalingConfiguration:
         MinCapacity: 0.5
         MaxCapacity: 16
