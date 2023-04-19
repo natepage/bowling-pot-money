@@ -87,17 +87,19 @@ Resources:
         - Key: Name
           Value: !Sub ${AWS::StackName}-Public
 
-  PrivateSubnet:
+  PrivateSubnetA:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
       CidrBlock: 10.0.0.32/28
-      AvailabilityZone: !Select
-        - 0
-        - Fn::GetAZs: !Ref "AWS::Region"
-      Tags:
-        - Key: Name
-          Value: !Sub ${AWS::StackName}-Private
+      AvailabilityZone: ap-southeast-2a
+
+  PrivateSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.0.64/28
+      AvailabilityZone: ap-southeast-2b
 
   NATInstance:
     Type: AWS::EC2::Instance
@@ -112,9 +114,6 @@ Resources:
           DeviceIndex: 0
           GroupSet:
             - !Ref NatSecurityGroup
-      Tags:
-        - Key: Name
-          Value: !Sub ${AWS::StackName}-nat-instance
 
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
@@ -157,7 +156,13 @@ Resources:
   PrivateSubnetARouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref PrivateSubnet
+      SubnetId: !Ref PrivateSubnetA
+      RouteTableId: !Ref PrivateRouteTable
+
+  PrivateSubnetBRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnetB
       RouteTableId: !Ref PrivateRouteTable
 
   # ------ Database ------
@@ -167,7 +172,8 @@ Resources:
       DBSubnetGroupDescription: "Subnets available for the RDS DB Instance"
       DBSubnetGroupName: "bowling-coke-money-serverless-db-subnet-group"
       SubnetIds:
-        - !Ref PrivateSubnet
+        - !Ref PrivateSubnetA
+        - !Ref PrivateSubnetB
 
   DatabaseCluster:
     Type: AWS::RDS::DBCluster
@@ -217,7 +223,8 @@ Resources:
         SecurityGroupIds:
           - !Ref LambdaSecurityGroup
         SubnetIds:
-          - !Ref PrivateSubnet
+          - !Ref PrivateSubnetA
+          - !Ref PrivateSubnetB
 
 Outputs:
   BowlingCokeMoneyWebsiteUrl:
