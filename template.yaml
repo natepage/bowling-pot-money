@@ -29,12 +29,6 @@ Resources:
         HttpRoot:
           Type: HttpApi
           Properties:
-            Path: /
-            Method: ANY
-        HttpSubPaths:
-          Type: HttpApi
-          Properties:
-            Path: /{proxy+}
             Method: ANY
       Policies:
         - Statement:
