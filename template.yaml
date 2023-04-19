@@ -72,6 +72,9 @@ Resources:
       VpcId: !Ref VPC
       CidrBlock: 10.0.128.0/20
       AvailabilityZone: ap-southeast-2a
+    Tags:
+      - Key: Name
+        Value: !Sub ${AWS::StackName}-PublicSubnetA
 
   PublicSubnetARouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
@@ -85,6 +88,9 @@ Resources:
       VpcId: !Ref VPC
       CidrBlock: 10.0.0.0/19
       AvailabilityZone: ap-southeast-2a
+    Tags:
+      - Key: Name
+        Value: !Sub ${AWS::StackName}-PrivateSubnetA
 
   PrivateSubnetARouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
@@ -99,6 +105,9 @@ Resources:
       VpcId: !Ref VPC
       CidrBlock: 10.0.144.0/20
       AvailabilityZone: ap-southeast-2b
+    Tags:
+      - Key: Name
+        Value: !Sub ${AWS::StackName}-PublicSubnetB
 
   PublicSubnetBRouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
@@ -112,6 +121,9 @@ Resources:
       VpcId: !Ref VPC
       CidrBlock: 10.0.32.0/19
       AvailabilityZone: ap-southeast-2b
+    Tags:
+      - Key: Name
+        Value: !Sub ${AWS::StackName}-PrivateSubnetB
 
   PrivateSubnetBRouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
