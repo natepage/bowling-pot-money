@@ -36,19 +36,12 @@ jobs:
                     aws-secret-access-key: ${{ secrets.AWS_ACCESS_KEY_SECRET }}
                     aws-region: 'ap-southeast-2'
 
-            -   name: Delete
+            -   name: Deploy
                 run: |
-                    sam delete \
+                    sam deploy \
+                        --no-confirm-changeset \
                         --stack-name BowlingCokeMoney \
+                        --resolve-s3 \
+                        --capabilities CAPABILITY_IAM \
                         --region ap-southeast-2 \
-                        --no-prompts
-
-#            -   name: Deploy
-#                run: |
-#                    sam deploy \
-#                        --no-confirm-changeset \
-#                        --stack-name BowlingCokeMoney \
-#                        --resolve-s3 \
-#                        --capabilities CAPABILITY_IAM \
-#                        --region ap-southeast-2 \
-#                        --parameter-overrides DatabaseMasterUserPassword=${{ secrets.AWS_DB_MASTER_USER_PASSWORD }}
+                        --parameter-overrides DatabaseMasterUserPassword=${{ secrets.AWS_DB_MASTER_USER_PASSWORD }}
