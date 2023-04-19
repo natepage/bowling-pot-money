@@ -99,22 +99,6 @@ Resources:
       RouteTableId: !Ref PublicRouteTable
 
   # ------ Network - AZ 2 ------
-  PublicSubnetB:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref VPC
-      CidrBlock: 10.0.144.0/20
-      AvailabilityZone: ap-southeast-2b
-      Tags:
-        - Key: Name
-          Value: !Sub ${AWS::StackName}-PublicSubnetB
-
-  PublicSubnetBRouteTableAssociation:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      SubnetId: !Ref PublicSubnetB
-      RouteTableId: !Ref PublicRouteTable
-
   PrivateSubnetB:
     Type: AWS::EC2::Subnet
     Properties:
@@ -167,11 +151,6 @@ Resources:
           IpProtocol: tcp
           FromPort: 80
           ToPort: 80
-        # http PublicSubnetB
-        - CidrIp: 10.0.144.0/20
-          IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
       VpcId: !Ref VPC
 
   # ------ Network - NAT Gateway ------
@@ -184,10 +163,6 @@ Resources:
       NetworkInterfaces:
         - SubnetId: !Ref PublicSubnetA
           DeviceIndex: 0
-          GroupSet:
-            - !Ref NatSecurityGroup
-        - SubnetId: !Ref PublicSubnetB
-          DeviceIndex: 1
           GroupSet:
             - !Ref NatSecurityGroup
 
