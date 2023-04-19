@@ -10,6 +10,7 @@ Globals:
         BREF_LOOP_MAX: 100
         AUTH0_CLIENT_ID: bref-ssm:/app/AUTH0_CLIENT_ID
         AUTH0_CLIENT_SECRET: bref-ssm:/app/AUTH0_CLIENT_SECRET
+        DATABASE_URL: bref-ssm:/app/DATABASE_URL
         MAILER_DSN: bref-ssm:/app/MAILER_DSN
         AUTH0_REDIRECT_URI: https://twjqadat3h.execute-api.ap-southeast-2.amazonaws.com/admin/auth0/callback
 
@@ -36,6 +37,13 @@ Resources:
               - 'ssm:GetParameters'
               - 'ssm:GetParameter'
             Resource: !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/app/*'
+      VpcConfig:
+        SecurityGroupIds:
+          - sg-061088579fc7642e6
+        SubnetIds:
+          - subnet-0ccf2735a97623c7e
+          - subnet-01e7944014e8b9bd3
+          - subnet-06294fcfa2b69ad71
 
 Outputs:
   BowlingCokeMoneyWebsiteUrl:
