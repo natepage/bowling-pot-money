@@ -15,6 +15,150 @@ Globals:
         AUTH0_REDIRECT_URI: https://twjqadat3h.execute-api.ap-southeast-2.amazonaws.com/admin/auth0/callback
 
 Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/25
+      EnableDnsSupport: "true"
+      EnableDnsHostnames: "true"
+
+  NatSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Security Group for the NAT Instance"
+      SecurityGroupIngress:
+      # http & https traffic
+      - CidrIp: 10.0.0.32/28
+        FromPort: 80
+        ToPort: 80
+        IpProtocol: tcp
+      - CidrIp: 10.0.0.32/28
+        FromPort: 443
+        ToPort: 443
+        IpProtocol: tcp
+      #ssh access
+      - CidrIp: 0.0.0.0/0
+        FromPort: 22
+        ToPort: 22
+        IpProtocol: tcp
+      # routing
+      - CidrIp: 10.0.0.32/28
+        IpProtocol: icmp
+        FromPort: -1
+        ToPort: -1
+      VpcId: !Ref VPC
+
+  LambdaSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Security Group for Lambda Functions"
+      SecurityGroupIngress:
+        # http & https traffic
+        - CidrIp: 10.0.0.16/28
+          FromPort: 80
+          ToPort: 80
+          IpProtocol: tcp
+        - CidrIp: 10.0.0.16/28
+          FromPort: 443
+          ToPort: 443
+          IpProtocol: tcp
+      VpcId: !Ref VPC
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    DependsOn: VPC
+
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.0.16/28
+      AvailabilityZone: !Select
+        - 0
+        - Fn::GetAZs: !Ref "AWS::Region"
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-Public
+
+  PrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.0.32/28
+      AvailabilityZone: !Select
+        - 0
+        - Fn::GetAZs: !Ref "AWS::Region"
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-Private
+
+  NATInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.nano
+      ImageId: ami-04b414ee0c4c74489
+      SourceDestCheck: false
+      #KeyName: ryan.pem
+      NetworkInterfaces:
+        - SubnetId: !Ref PublicSubnet
+          AssociatePublicIpAddress: false
+          DeviceIndex: 0
+          GroupSet:
+            - !Ref NatSecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-nat-instance
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        -   Key: Name
+            Value: Public
+
+  PublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: AttachGateway
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  PublicSubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet
+      RouteTableId: !Ref PublicRouteTable
+
+  PrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        -   Key: Name
+            Value: Private
+
+  PrivateRoute:
+    Type: AWS::EC2::Route
+    DependsOn: AttachGateway
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      InstanceId: !Ref NATInstance
+
+  PrivateSubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet
+      RouteTableId: !Ref PrivateRouteTable
+
   Website:
     Type: AWS::Serverless::Function
     Properties:
@@ -39,11 +183,9 @@ Resources:
             Resource: !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/app/*'
       VpcConfig:
         SecurityGroupIds:
-          - sg-061088579fc7642e6
+          - !Ref LambdaSecurityGroup
         SubnetIds:
-          - subnet-0ccf2735a97623c7e
-          - subnet-01e7944014e8b9bd3
-          - subnet-06294fcfa2b69ad71
+          - !Ref PrivateSubnet
 
 Outputs:
   BowlingCokeMoneyWebsiteUrl:
