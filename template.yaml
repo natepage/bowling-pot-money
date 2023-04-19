@@ -183,12 +183,10 @@ Resources:
       SourceDestCheck: false
       NetworkInterfaces:
         - SubnetId: !Ref PublicSubnetA
-          AssociatePublicIpAddress: true
           DeviceIndex: 0
           GroupSet:
             - !Ref NatSecurityGroup
         - SubnetId: !Ref PublicSubnetB
-          AssociatePublicIpAddress: true
           DeviceIndex: 0
           GroupSet:
             - !Ref NatSecurityGroup
