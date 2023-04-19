@@ -107,7 +107,7 @@ Resources:
       #KeyName: ryan.pem
       NetworkInterfaces:
         - SubnetId: !Ref PublicSubnet
-          AssociatePublicIpAddress: false
+          AssociatePublicIpAddress: true
           DeviceIndex: 0
           GroupSet:
             - !Ref NatSecurityGroup
