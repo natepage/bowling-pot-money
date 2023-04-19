@@ -161,11 +161,20 @@ Resources:
       RouteTableId: !Ref PrivateRouteTable
 
   # ------ Database ------
+  DatabaseSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: "Subnets available for the RDS DB Instance"
+      DBSubnetGroupName: "bowling-coke-money-serverless-db-subnet-group"
+      SubnetIds:
+        - !Ref PrivateSubnet
+
   DatabaseCluster:
     Type: AWS::RDS::DBCluster
     Properties:
       Engine: aurora-postgresql
       DBClusterIdentifier: bowling-coke-money-serverless
+      DBSubnetGroupName: "bowling-coke-money-serverless-db-subnet-group"
       EngineVersion: 15.2
       MasterUsername: postgres
       ServerlessV2ScalingConfiguration:
