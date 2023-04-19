@@ -28,8 +28,6 @@ Resources:
       Events:
         HttpRoot:
           Type: HttpApi
-          Properties:
-            Method: ANY
       Policies:
         - Statement:
           - Sid: SSMGetParameterPolicy
