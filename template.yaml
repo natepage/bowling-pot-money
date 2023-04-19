@@ -28,6 +28,9 @@ Resources:
       CidrBlock: 10.0.0.0/16
       EnableDnsSupport: "true"
       EnableDnsHostnames: "true"
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-Vpc
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
@@ -163,6 +166,7 @@ Resources:
       NetworkInterfaces:
         - SubnetId: !Ref PublicSubnetA
           DeviceIndex: 0
+          AssociatePublicIpAddress: true
           GroupSet:
             - !Ref NatSecurityGroup
 
@@ -198,6 +202,7 @@ Resources:
       Engine: aurora-postgresql
       DBInstanceClass: db.serverless
       DBClusterIdentifier: !Ref DatabaseCluster
+      Port: 5432
 
   # ------ Lambda ------
   Website:
