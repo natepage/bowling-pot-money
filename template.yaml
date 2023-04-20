@@ -134,16 +134,24 @@ Resources:
     Properties:
       GroupDescription: "Security Group for the NAT Instance"
       SecurityGroupIngress:
-        # http and routing PrivateSubnetA
+        # http, https, and routing PrivateSubnetA
         - CidrIp: 10.0.0.0/19
           IpProtocol: tcp
           FromPort: 80
           ToPort: 80
         - CidrIp: 10.0.0.0/19
+          IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+        - CidrIp: 10.0.0.0/19
           IpProtocol: icmp
           FromPort: -1
           ToPort: -1
         # http and routing PrivateSubnetB
+        - CidrIp: 10.0.32.0/19
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
         - CidrIp: 10.0.32.0/19
           IpProtocol: tcp
           FromPort: 80
@@ -159,11 +167,15 @@ Resources:
     Properties:
       GroupDescription: "Security Group for Lambda Functions"
       SecurityGroupIngress:
-        # http PublicSubnetA
+        # http, https PublicSubnetA
         - CidrIp: 10.0.128.0/20
           IpProtocol: tcp
           FromPort: 80
           ToPort: 80
+        - CidrIp: 10.0.128.0/20
+          IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
       VpcId: !Ref VPC
 
   # ------ Network - NAT Gateway ------
