@@ -140,18 +140,10 @@ Resources:
           FromPort: 80
           ToPort: 80
         - CidrIp: 10.0.0.0/19
-          IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-        - CidrIp: 10.0.0.0/19
           IpProtocol: icmp
           FromPort: -1
           ToPort: -1
         # http and routing PrivateSubnetB
-        - CidrIp: 10.0.32.0/19
-          IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
         - CidrIp: 10.0.32.0/19
           IpProtocol: tcp
           FromPort: 80
