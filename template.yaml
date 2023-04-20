@@ -2,6 +2,10 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 
 Parameters:
+  CustomDomainName:
+    Type: String
+    Description: The custom domain name for the API
+    Default: bowlingcokemoney.com
   DatabaseMasterUserPassword:
     Type: String
     NoEcho: true
@@ -182,7 +186,7 @@ Resources:
   NATInstance:
     Type: AWS::EC2::Instance
     Properties:
-      InstanceType: t2.nano
+      InstanceType: t2.micro
       ImageId: ami-0c2cb2ab4d9226c27
       SourceDestCheck: false
       NetworkInterfaces:
@@ -230,7 +234,8 @@ Resources:
   Website:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: 'Symfony-Serverless'
+      FunctionName: !Sub '${AWS::StackName}-Website'
+      Description: !Sub 'Public website for ${AWS::StackName}'
       CodeUri: .
       Handler: public/index.php
       Timeout: 30 # in seconds (API Gateway has a timeout of 30 seconds)
