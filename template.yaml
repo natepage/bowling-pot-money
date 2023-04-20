@@ -103,7 +103,7 @@ Resources:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref PrivateSubnetA
-      RouteTableId: !Ref PublicRouteTable
+      RouteTableId: !Ref PrivateRouteTable
 
   # ------ Network - AZ 2 ------
   PrivateSubnetB:
@@ -120,7 +120,7 @@ Resources:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref PrivateSubnetB
-      RouteTableId: !Ref PublicRouteTable
+      RouteTableId: !Ref PrivateRouteTable
 
   # ------ Network - Security Groups ------
   NatSecurityGroup:
