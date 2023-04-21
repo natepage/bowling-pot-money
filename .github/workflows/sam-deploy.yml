@@ -40,7 +40,8 @@ jobs:
                 run: |
                     sam delete \
                         --stack-name BowlingCokeMoney \
-                        --region ap-southeast-2
+                        --region ap-southeast-2 \
+                        --no-prompts
 
 #            -   name: Deploy
 #                run: |
