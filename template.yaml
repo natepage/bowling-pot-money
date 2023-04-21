@@ -195,6 +195,9 @@ Resources:
           AssociatePublicIpAddress: true
           GroupSet:
             - !Ref NatSecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-NatInstance
 
   # ------ Database ------
   DatabaseSubnetGroup:
