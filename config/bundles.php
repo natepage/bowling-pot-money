@@ -11,4 +11,8 @@ return [
     Symfony\UX\Turbo\TurboBundle::class => ['all' => true],
     EonX\EasyUtils\Bridge\Symfony\EasyUtilsSymfonyBundle::class => ['all' => true],
     EonX\EasyBugsnag\Bridge\Symfony\EasyBugsnagSymfonyBundle::class => ['all' => true],
+    EonX\EasyLogging\Bridge\Symfony\EasyLoggingSymfonyBundle::class => ['all' => true],
+    EonX\EasyErrorHandler\Bridge\Symfony\EasyErrorHandlerSymfonyBundle::class => ['all' => true],
+    Symfony\Bundle\MonologBundle\MonologBundle::class => ['all' => true],
+    Symfony\UX\StimulusBundle\StimulusBundle::class => ['all' => true],
 ];
