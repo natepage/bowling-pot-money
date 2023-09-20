@@ -14,6 +14,11 @@ abstract class AbstractStringBackedEnumType extends Type
             return $value->value;
         }
 
+        $enumClass = $this->getEnumClass();
+        if (\is_string($value) && $enumClass::tryFrom($value) instanceof $enumClass) {
+            return $value;
+        }
+
         throw new \LogicException(\sprintf(
             'Value must be an instance of BackedEnum, "%s" given.',
             \is_object($value) ? \get_class($value) : \gettype($value)

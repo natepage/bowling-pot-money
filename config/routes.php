@@ -2,19 +2,31 @@
 
 declare(strict_types=1);
 
+use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
     $imports = [
-        'App\Admin\Controller' => '../src/Admin/Controller/',
-        'App\Debug\Controller' => '../src/Debug/Controller/',
-        'App\Team\Controller' => '../src/Team/Controller/',
+        'admin' => 'Admin',
+        'api' => 'Api',
+        'web' => 'Web',
     ];
 
-    foreach ($imports as $namespace => $path) {
-        $routingConfigurator->import([
-            'path' => $path,
-            'namespace' => $namespace,
+    foreach ($imports as $group => $folder) {
+        $importConfigurator = $routingConfigurator->import([
+            'path' => \sprintf('../src/Controller/%s/', $folder),
+            'namespace' => \sprintf('App\Controller\%s', $folder),
         ], 'attribute');
+
+        if ($group === 'api') {
+            $importConfigurator->prefix('/api');
+        }
     }
+
+    $routingConfigurator
+        ->add('web_homepage', '/')
+        ->controller(RedirectController::class)
+        ->defaults([
+            'route' => 'teams_list',
+        ]);
 };

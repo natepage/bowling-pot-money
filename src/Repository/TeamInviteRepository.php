@@ -9,6 +9,19 @@ use EonX\EasyRepository\Implementations\Doctrine\ORM\AbstractOptimizedDoctrineOr
 
 final class TeamInviteRepository extends AbstractOptimizedDoctrineOrmRepository
 {
+    /**
+     * @return \App\Entity\TeamInvite[]
+     */
+    public function findByTeamId(string $teamId): array
+    {
+        return $this->createQueryBuilder('ti')
+            ->where('ti.team = :teamId')
+            ->setParameter('teamId', $teamId)
+            ->orderBy('ti.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function invalidateExistingInvites(string $teamId, string $email): void
     {
         $queryBuilder = $this->createQueryBuilder('ti');

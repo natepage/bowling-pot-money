@@ -7,7 +7,7 @@ final class Version20230407001035 extends AbstractMigration
 {
     public function migrate(): void
     {
-        $this->addSql('CREATE TABLE team_member (id UUID NOT NULL, team_id UUID DEFAULT NULL, user_id UUID DEFAULT NULL, access_level VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE team_member (id UUID NOT NULL, team_id UUID DEFAULT NULL, user_id UUID DEFAULT NULL, access_level VARCHAR(255) NOT NULL, created_at TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_6FFBDA1296CD8AE ON team_member (team_id)');
         $this->addSql('CREATE INDEX IDX_6FFBDA1A76ED395 ON team_member (user_id)');
         $this->addSql('CREATE UNIQUE INDEX team_member_unique ON team_member (team_id, user_id)');

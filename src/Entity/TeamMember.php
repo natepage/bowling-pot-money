@@ -21,10 +21,13 @@ class TeamMember extends AbstractEntity
     #[ORM\Column(type: Types::STRING)]
     private string $currency;
 
-    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'members')]
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $sequentialNumber = 0;
+
+    #[ORM\ManyToOne(targetEntity: Team::class)]
     private Team $team;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'teams')]
+    #[ORM\ManyToOne(targetEntity: User::class)]
     private User $user;
 
     public function getBalance(): string
@@ -58,6 +61,17 @@ class TeamMember extends AbstractEntity
     {
         $this->accessLevel = $accessLevel;
         return $this;
+    }
+
+    public function setSequentialNumber(int $sequentialNumber): TeamMember
+    {
+        $this->sequentialNumber = $sequentialNumber;
+        return $this;
+    }
+
+    public function getSequentialNumber(): int
+    {
+        return $this->sequentialNumber;
     }
 
     public function getTeam(): Team

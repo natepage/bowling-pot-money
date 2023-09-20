@@ -15,6 +15,7 @@
         "doctrine/orm": "^2.14",
         "easycorp/easyadmin-bundle": "^4.6",
         "eonx-com/easy-repository": "^4.3",
+        "eonx-com/easy-utils": "^4.3",
         "laminas/laminas-uri": "^2.5",
         "nesbot/carbon": "^2.66",
         "nyholm/psr7": "^1.5",
@@ -28,6 +29,8 @@
         "symfony/mailer": "6.2.*",
         "symfony/runtime": "6.2.*",
         "symfony/security-bundle": "6.2.*",
+        "symfony/ux-turbo": "^2.7",
+        "symfony/webpack-encore-bundle": "*",
         "symfony/yaml": "6.2.*"
     },
     "require-dev": {

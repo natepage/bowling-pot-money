@@ -1,0 +1,26 @@
+<div class="table-responsive">
+    <table class="table">
+        <thead class="text-primary">
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Access Level</th>
+            <th>Balance</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for teamMember in teamMembers %}
+                <tr>
+                    <td class="photo-td text-center">
+                        <div class="photo">
+                            <img src="{{ teamMember.user.picture }}" alt="{{ teamMember.user.name }}">
+                        </div>
+                    </td>
+                    <td>{{ teamMember.user.name }}</td>
+                    <td>{{ teamMember.accessLevel.value }}</td>
+                    <td>{{ teamMember|balance }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

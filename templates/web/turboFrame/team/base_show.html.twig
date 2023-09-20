@@ -1,0 +1,14 @@
+{% extends 'web/turboFrame/base_turbo_frame.html.twig' %}
+
+{% block frameContent %}
+    <div class="row row-cols-1 row-cols-md-1 g-4">
+        <div class="col">
+            <h2 class="team-show-title">
+                <a href="{{ path('teams_show', {'teamId': team.id}) }}" class="link-no-style">
+                    {{ team.title }}
+                </a>
+            </h2>
+        </div>
+        {% block showTeamContent %}{% endblock %}
+    </div>
+{% endblock %}

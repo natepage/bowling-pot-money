@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use App\Infrastructure\Doctrine\Dbal\Type\CarbonImmutableType;
+use App\Infrastructure\Doctrine\Dbal\Type\GameStatusType;
+use App\Infrastructure\Doctrine\Dbal\Type\SessionStatusType;
 use App\Infrastructure\Doctrine\Dbal\Type\TeamInviteStatusType;
 use App\Infrastructure\Doctrine\Dbal\Type\TeamMemberAccessLevelType;
 use Doctrine\DBAL\Types\Types;
@@ -13,6 +15,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         'dbal' => [
             'url' => '%env(resolve:DATABASE_URL)%',
             'types' => [
+                GameStatusType::NAME => GameStatusType::class,
+                SessionStatusType::NAME => SessionStatusType::class,
                 Types::DATETIME_IMMUTABLE => CarbonImmutableType::class,
                 TeamInviteStatusType::NAME => TeamInviteStatusType::class,
                 TeamMemberAccessLevelType::NAME => TeamMemberAccessLevelType::class,

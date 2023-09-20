@@ -1,0 +1,5 @@
+{% extends 'web/layout.html.twig' %}
+
+{% block body %}
+    {{ turboFrame('pageContent', path(frameRoute, frameRouteParams), 'turbo-frame-history') }}
+{% endblock %}

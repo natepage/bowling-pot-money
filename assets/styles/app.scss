@@ -1,0 +1,92 @@
+@import "~bootstrap/scss/bootstrap";
+@import "./bootstrap-theme";
+
+// Global
+$theme-containers-padding-top: 60px;
+$theme-containers-border-radius: 5px;
+
+// Main Panel
+.main-panel-container {
+  border-top: 2px solid #42b883;
+  position: relative;
+  float: right;
+  width: 100%;
+  min-height: 100vh;
+
+  .main-navbar {
+    position: absolute;
+    z-index: 1050;
+    width: 100%;
+    padding-top: 16px;
+
+    .navbar-wrapper {
+      display: flex;
+      align-items: center;
+
+      .navbar-title {
+        color: white;
+        padding-left: 5px;
+      }
+    }
+
+    .navbar-toggler {
+      right: 18px;
+    }
+  }
+
+  .main-content-wrapper {
+    padding: $theme-containers-padding-top 30px 30px 280px;
+    min-height: calc(100vh - 70px);
+
+    @include media-breakpoint-up(md) {
+      padding-left: 205px;
+    }
+    @include media-breakpoint-down(md) {
+      padding-left: 30px;
+    }
+
+    .main-content {
+    }
+  }
+}
+
+// Sidebar
+.sidebar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100; /* Behind the navbar */
+  padding: $theme-containers-padding-top 0 0; /* Height of navbar */
+  margin-left: 16px;
+
+  @include media-breakpoint-down(md) {
+    width: calc(100vw - 35px);
+  }
+
+  .sidebar-content-wrapper {
+    padding: 16px;
+    border-radius: $theme-containers-border-radius;
+    height: calc(100vh - 90px);
+    background: linear-gradient(0deg,#389466,#42b883);
+
+    .nav-main {
+      @include media-breakpoint-down(md) {
+        align-content: center;
+      }
+    }
+
+    .nav-link {
+      display: flex;
+      color: white;
+
+      .sidebar-item-icon {
+        align-self: center;
+      }
+
+      .sidebar-item-text {
+        align-self: center;
+        margin-left: 5px;
+      }
+    }
+  }
+}

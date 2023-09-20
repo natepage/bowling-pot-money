@@ -19,6 +19,10 @@ return static function (SecurityConfig $config, string $env): void {
         ->pattern('^/(_(profiler|wdt)|css|images|js)/')
         ->security(false);
 
+    $config->firewall('api')
+        ->pattern('^/api')
+        ->security(false);
+
     $config->firewall('main')
         ->pattern('^/')
         ->customAuthenticators([Auth0Authenticator::class])

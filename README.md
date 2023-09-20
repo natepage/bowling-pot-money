@@ -3,13 +3,16 @@
 ## Tech Foundation
 
 - [ ] Integrate with bugsnag
-- [ ] Build FE with Symfony UX and Turbo
+- [X] Build FE with Symfony UX and Turbo
+- [ ] Integrate against railway database (Remove db from AWS)
+- [ ] Implement custom domain in AWS
 
 ## Security and Admin
 
 - [X] Use Auth0 for authentication
 - [X] Use EasyAdmin for admin interface
 - [ ] Have different roles (Super Admin, Admin, User)
+- [ ] Have separate logout for web and admin
 
 ## Teams
 
@@ -21,6 +24,8 @@
 - [X] Create invitation link for Team per email (once-off, expiry, support existing user)
 - [ ] Automatic expiry for invitation links
 - [ ] Send invite emails async
+- [ ] Restrict to max 10 members per team
+- [ ] Allow team admin to cancel invite
 
 ## Achievements
 
@@ -39,5 +44,11 @@
 
 - [ ] Session is a way to represent league nights, group User and Achievements occurrences
 - [ ] Session also allow to capture bowling games, so we can build User/Team pair stats
-- [ ] Session can be opened/closed
+- [X] Session can be opened/closed
 - [ ] Session must be opened to add Achievement occurrence against User/Team pair
+
+## Games
+
+- [ ] Game must belong to a SessionMember
+- [ ] SessionMember cannot have more than one opened game at a time
+- [ ] Game must have a score before it can be closed

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>{% block page_title %}Bowling Pot Money{% endblock %}</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+          name='viewport'/>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" data-turbo-track="reload">
+
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+    <script src="https://kit.fontawesome.com/fe26233fa4.js" crossorigin="anonymous" defer data-turbo-track="reload"></script>
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</head>
+<body>
+<div id="sidebar-container-id" class="sidebar-container d-md-block collapse">
+    <div class="sidebar-content-wrapper">
+        <div class="sidebar-content">
+            <ul class="nav flex-column nav-main">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('teams_list') }}">
+                        <i class="sidebar-item-icon fa fa-people-group fa-2x"></i>
+                        <span class="sidebar-item-text hidden">Teams</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="main-panel-container">
+    <header class="navbar navbar-dark main-navbar">
+        <div class="container-fluid">
+            <div class="navbar-wrapper">
+                <div class="navbar-title">Bowling Pot Money</div>
+            </div>
+        </div>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#sidebar-container-id" aria-controls="sidebar-container-id" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </header>
+    <div class="main-content-wrapper">
+        <div class="row">
+            <div class="col-12 main-content">
+                {% block body %}{% endblock %}
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

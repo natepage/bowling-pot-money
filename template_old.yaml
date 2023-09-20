@@ -1,0 +1,270 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  CustomDomainName:
+    Type: String
+    Description: The custom domain name for the API
+    Default: bowlingcokemoney.com
+  DatabaseMasterUserPassword:
+    Type: String
+    NoEcho: true
+    Description: The database master user password
+
+Globals:
+  Function:
+    Environment:
+      Variables:
+        APP_ENV: prod
+        APP_RUNTIME: Runtime\Bref\Runtime
+        BREF_LOOP_MAX: 100
+        AUTH0_CLIENT_ID: bref-ssm:/app/AUTH0_CLIENT_ID
+        AUTH0_CLIENT_SECRET: bref-ssm:/app/AUTH0_CLIENT_SECRET
+        DATABASE_URL: bref-ssm:/app/DATABASE_URL
+        MAILER_DSN: bref-ssm:/app/MAILER_DSN
+        AUTH0_REDIRECT_URI: https://twjqadat3h.execute-api.ap-southeast-2.amazonaws.com/admin/auth0/callback
+
+Resources:
+  # ------ Network ------
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: "true"
+      EnableDnsHostnames: "true"
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-Vpc
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-InternetGateway
+    DependsOn: VPC
+
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-PublicRouteTable
+
+  PublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: AttachGateway
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  PrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-PrivateRouteTable
+
+  PrivateRoute:
+    Type: AWS::EC2::Route
+    DependsOn: AttachGateway
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      InstanceId: !Ref NATInstance
+
+  # ------ Network - AZ 1 ------
+  PublicSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.128.0/20
+      AvailabilityZone: !Sub ${AWS::Region}a
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-PublicSubnetA
+
+  PublicSubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnetA
+      RouteTableId: !Ref PublicRouteTable
+
+  PrivateSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.0.0/19
+      AvailabilityZone: !Sub ${AWS::Region}a
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-PrivateSubnetA
+
+  PrivateSubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnetA
+      RouteTableId: !Ref PrivateRouteTable
+
+  # ------ Network - AZ 2 ------
+  PrivateSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.32.0/19
+      AvailabilityZone: !Sub ${AWS::Region}b
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-PrivateSubnetB
+
+  PrivateSubnetBRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnetB
+      RouteTableId: !Ref PrivateRouteTable
+
+  # ------ Network - Security Groups ------
+  NatSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Security Group for the NAT Instance"
+      SecurityGroupIngress:
+        # http, https, and routing PrivateSubnetA
+        - CidrIp: 10.0.0.0/19
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+        - CidrIp: 10.0.0.0/19
+          IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+        - CidrIp: 10.0.0.0/19
+          IpProtocol: icmp
+          FromPort: -1
+          ToPort: -1
+        # http, https, and routing PrivateSubnetB
+        - CidrIp: 10.0.32.0/19
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+        - CidrIp: 10.0.32.0/19
+          IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+        - CidrIp: 10.0.32.0/19
+          IpProtocol: icmp
+          FromPort: -1
+          ToPort: -1
+      VpcId: !Ref VPC
+
+  LambdaSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Security Group for Lambda Functions"
+      SecurityGroupIngress:
+        # http, https PublicSubnetA
+        - CidrIp: 10.0.128.0/20
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+        - CidrIp: 10.0.128.0/20
+          IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+      VpcId: !Ref VPC
+
+  # ------ Network - NAT Gateway ------
+  NATInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-0c2cb2ab4d9226c27
+      SourceDestCheck: false
+      NetworkInterfaces:
+        - SubnetId: !Ref PublicSubnetA
+          DeviceIndex: 0
+          AssociatePublicIpAddress: true
+          GroupSet:
+            - !Ref NatSecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-NatInstance
+
+  # ------ Database ------
+  DatabaseSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: !Sub "DB SubnetGroup for ${AWS::StackName}"
+      DBSubnetGroupName: !Sub "${AWS::StackName}-Serverless-DBSubnetGroup"
+      SubnetIds:
+        - !Ref PrivateSubnetA
+        - !Ref PrivateSubnetB
+
+  DatabaseCluster:
+    Type: AWS::RDS::DBCluster
+    Properties:
+      Engine: aurora-postgresql
+      Port: 5432
+      DBClusterIdentifier: !Sub "${AWS::StackName}-Serverless"
+      DBSubnetGroupName: !Ref DatabaseSubnetGroup
+      EngineVersion: 15.2
+      MasterUsername: postgres
+      MasterUserPassword:
+        Ref: DatabaseMasterUserPassword
+      ServerlessV2ScalingConfiguration:
+        MinCapacity: 0.5
+        MaxCapacity: 16
+      VpcSecurityGroupIds:
+        - !Ref LambdaSecurityGroup
+
+  DatabaseInstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      Engine: aurora-postgresql
+      DBInstanceClass: db.serverless
+      DBClusterIdentifier: !Ref DatabaseCluster
+
+  # ------ Lambda ------
+  Website:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub '${AWS::StackName}-Website'
+      Description: !Sub 'Public website for ${AWS::StackName}'
+      CodeUri: .
+      Handler: public/index.php
+      Timeout: 30 # in seconds (API Gateway has a timeout of 30 seconds)
+      MemorySize: 512
+      Runtime: provided.al2
+      Layers:
+        - !Sub 'arn:aws:lambda:${AWS::Region}:534081306603:layer:php-82-fpm:33'
+      Events:
+        HttpRoot:
+          Type: HttpApi
+      Policies:
+        - Statement:
+          - Sid: SSMGetParameterPolicy
+            Effect: Allow
+            Action:
+              - 'ssm:GetParameters'
+              - 'ssm:GetParameter'
+            Resource: !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/app/*'
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref LambdaSecurityGroup
+        SubnetIds:
+          - !Ref PrivateSubnetA
+          - !Ref PrivateSubnetB
+
+Outputs:
+  BowlingCokeMoneyWebsiteUrl:
+    Description: 'URL of our function'
+    Value: !Sub 'https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/'

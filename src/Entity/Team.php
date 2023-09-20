@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class Team extends AbstractEntity implements ActorAwareInterface
 {
+    public const MAX_MEMBERS = 10;
+
     use ActorAwareTrait;
 
     #[ORM\Column(type: Types::STRING)]
