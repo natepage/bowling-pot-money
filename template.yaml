@@ -6,6 +6,10 @@ Parameters:
     Type: String
     Description: The custom domain name for the API
     Default: bowlingcokemoney.com
+  HostedZoneId:
+    Type: String
+    Description: Route53 HostedZone ID for custom domain
+    Default: Z02043462K7X1948WL5PW
 
 Globals:
   Function:
@@ -21,6 +25,25 @@ Globals:
         AUTH0_REDIRECT_URI: https://twjqadat3h.execute-api.ap-southeast-2.amazonaws.com/admin/auth0/callback
 
 Resources:
+  GenerateCertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Ref CustomDomainName
+      ValidationMethod: DNS
+      DomainValidationOptions:
+        - DomainName: !Ref CustomDomainName
+          HostedZoneId: !Ref HostedZoneId
+
+  # ------ API ------
+  HttpApiGateway:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      Domain:
+        DomainName: !Ref CustomDomainName
+        CertificateArn: !Ref GenerateCertificate
+        Route53:
+          HostedZoneId: !Ref HostedZoneId
+
   # ------ Lambda ------
   Website:
     Type: AWS::Serverless::Function
@@ -37,6 +60,8 @@ Resources:
       Events:
         HttpRoot:
           Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApiGateway
       Policies:
         - Statement:
           - Sid: SSMGetParameterPolicy
