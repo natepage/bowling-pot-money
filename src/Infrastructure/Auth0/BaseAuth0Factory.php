@@ -20,21 +20,12 @@ final class BaseAuth0Factory
      */
     public function create(): Auth0
     {
-//        $config = new SdkConfiguration(
-//            domain: 'bowling-coke-money.au.auth0.com',
-//            clientId: $this->clientId,
-//            redirectUri: $this->redirectUri,
-//            clientSecret: $this->clientSecret,
-//            audience: ['https://bowling-coke-money.com'],
-//            cookieSecret: 'secret',
-//        );
-
         $config = new SdkConfiguration(
-            domain: 'auth.eonx.com',
-            clientId: 'rQgiYcZYPru4b0xF4qirZaExxgGHGkka',
+            domain: 'bowling-coke-money.au.auth0.com',
+            clientId: $this->clientId,
             redirectUri: $this->redirectUri,
-            clientSecret: 'T4XibJQBYIxarFE9jf5Lbo4e5nWaML0ctclWTewvaziRaCwmWI_eZBrjmWFAuhkT',
-            audience: ['com.eonx.payment-gateway.v3'],
+            clientSecret: $this->clientSecret,
+            audience: ['https://bowling-coke-money.com'],
             cookieSecret: 'secret',
         );
 
