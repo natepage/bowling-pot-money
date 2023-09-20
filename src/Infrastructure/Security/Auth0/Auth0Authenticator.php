@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Security\Auth0;
 
 use App\Infrastructure\Auth0\Auth0Sdk;
+use Bugsnag\Client;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -16,8 +17,10 @@ use Throwable;
 
 final class Auth0Authenticator extends AbstractAuthenticator
 {
-    public function __construct(private readonly Auth0Sdk $auth0Sdk)
-    {
+    public function __construct(
+        private readonly Auth0Sdk $auth0Sdk,
+        private readonly Client $bugsnag,
+    ) {
     }
 
     public function authenticate(Request $request): Passport
@@ -25,7 +28,11 @@ final class Auth0Authenticator extends AbstractAuthenticator
         try {
             $auth0User = new Auth0User($this->auth0Sdk->getUser($request));
         } catch (Throwable $throwable) {
-            throw new AuthenticationException($throwable->getMessage(), (int)$throwable->getCode(), $throwable);
+            $newThrowable = new AuthenticationException($throwable->getMessage(), (int)$throwable->getCode(), $throwable);
+
+            $this->bugsnag->notifyException($newThrowable);
+
+            throw $newThrowable;
         }
 
         return new SelfValidatingPassport(
