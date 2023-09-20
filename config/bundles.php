@@ -10,4 +10,5 @@ return [
     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
     Symfony\UX\Turbo\TurboBundle::class => ['all' => true],
     EonX\EasyUtils\Bridge\Symfony\EasyUtilsSymfonyBundle::class => ['all' => true],
+    EonX\EasyBugsnag\Bridge\Symfony\EasyBugsnagSymfonyBundle::class => ['all' => true],
 ];
