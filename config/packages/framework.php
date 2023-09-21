@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use AsyncAws\DynamoDbSession\SessionHandler as DynamoDbSessionHandler;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -10,7 +11,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         'http_method_override' => false,
         'handle_all_throwables' => true,
         'session' => [
-            'handler_id' => null,
+            'handler_id' => DynamoDbSessionHandler::class,
             'cookie_secure' => 'auto',
             'cookie_samesite' => 'lax',
             'storage_factory_id' => 'session.storage.factory.native',
@@ -24,6 +25,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         $containerConfigurator->extension('framework', [
             'test' => true,
             'session' => [
+                'handler_id' => null,
                 'storage_factory_id' => 'session.storage.factory.mock_file',
             ],
         ]);
