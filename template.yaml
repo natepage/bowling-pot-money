@@ -11,23 +11,8 @@ Parameters:
     Description: Route53 HostedZone ID for custom domain
     Default: Z02043462K7X1948WL5PW
 
-Globals:
-  Function:
-    Environment:
-      Variables:
-        APP_ENV: prod
-        APP_CACHE_DIR: /tmp/var/cache
-        APP_LOG_DIR: /tmp/var/log
-        APP_RUNTIME: Runtime\Bref\Runtime
-        AUTH0_CLIENT_ID: bref-ssm:/app/AUTH0_CLIENT_ID
-        AUTH0_CLIENT_SECRET: bref-ssm:/app/AUTH0_CLIENT_SECRET
-        AUTH0_REDIRECT_URI: https://bowlingcokemoney.com/admin/auth0/callback
-        BREF_LOOP_MAX: 10
-        BUGSNAG_API_KEY: bref-ssm:/app/BUGSNAG_API_KEY
-        DATABASE_URL: bref-ssm:/app/DATABASE_URL
-        MAILER_DSN: bref-ssm:/app/MAILER_DSN
-
 Resources:
+  # ------ CustomDomain Certificate ------
   GenerateCertificate:
     Type: AWS::CertificateManager::Certificate
     Properties:
@@ -37,7 +22,23 @@ Resources:
         - DomainName: !Ref CustomDomainName
           HostedZoneId: !Ref HostedZoneId
 
-  # ------ API ------
+  # ------ DynamoDB Table ------
+  SessionsDynamoDbTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: sessions
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      TimeToLiveSpecification:
+        AttributeName: expires
+        Enabled: true
+
+        # ------ API ------
   HttpApiGateway:
     Type: AWS::Serverless::HttpApi
     Properties:
@@ -65,8 +66,31 @@ Resources:
           Type: HttpApi
           Properties:
             ApiId: !Ref HttpApiGateway
+      Environment:
+        Variables:
+          APP_ENV: prod
+          APP_CACHE_DIR: /tmp/var/cache
+          APP_LOG_DIR: /tmp/var/log
+          AUTH0_CLIENT_ID: bref-ssm:/app/AUTH0_CLIENT_ID
+          AUTH0_CLIENT_SECRET: bref-ssm:/app/AUTH0_CLIENT_SECRET
+          AUTH0_REDIRECT_URI: https://bowlingcokemoney.com/admin/auth0/callback
+          BREF_LOOP_MAX: 10
+          BUGSNAG_API_KEY: bref-ssm:/app/BUGSNAG_API_KEY
+          DATABASE_URL: bref-ssm:/app/DATABASE_URL
+          MAILER_DSN: bref-ssm:/app/MAILER_DSN
       Policies:
         - Statement:
+          - Sid: SessionDynamoDbTablePolicy
+            Effect: Allow
+            Action:
+              - 'dynamodb:DescribeTable'
+              - 'dynamodb:Query'
+              - 'dynamodb:Scan'
+              - 'dynamodb:GetItem'
+              - 'dynamodb:PutItem'
+              - 'dynamodb:UpdateItem'
+              - 'dynamodb:DeleteItem'
+            Resource: !GetAtt SessionsDynamoDbTable.Arn
           - Sid: SSMGetParameterPolicy
             Effect: Allow
             Action:
