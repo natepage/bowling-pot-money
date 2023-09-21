@@ -62,11 +62,11 @@ Resources:
         Statement:
           - Sid: DenyNotHttpsTraffic
             Effect: Deny
-            Principal: *
-            Action: s3:*
+            Principal: '*'
+            Action: 's3:*'
             Resource:
-              - !Sub ${StaticAssetsS3Bucket.Arn}/*
-              - !GetAtt StaticAssetsS3Bucket.Arn
+              - !Sub '${StaticAssetsS3Bucket.Arn}/*'
+              - !GetAtt 'StaticAssetsS3Bucket.Arn'
             Condition:
               Bool:
                 'aws:SecureTransport': false
