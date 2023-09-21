@@ -63,6 +63,7 @@ jobs:
                         ./yarn.lock;
                     
                     # Move entrypoints.json back as Symfony needs it
+                    mkdir -p ./public/build;
                     mv ./entrypoints.json ./public/build/entrypoints.json;
 
 #            -   name: Delete
