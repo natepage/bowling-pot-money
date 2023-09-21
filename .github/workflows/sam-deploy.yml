@@ -50,6 +50,7 @@ jobs:
                 run: |
                     # Move ./public/build/entrypoints.json as Symfony needs it
                     mv ./public/build/entrypoints.json ./entrypoints.json;
+                    mv ./public/build/manifest.json ./manifest.json;
                     
                     # Remove not needed files to save space in lambda function
                     rm -rf \
@@ -65,13 +66,7 @@ jobs:
                     # Move entrypoints.json back as Symfony needs it
                     mkdir -p ./public/build;
                     mv ./entrypoints.json ./public/build/entrypoints.json;
-
-#            -   name: Delete
-#                run: |
-#                    sam delete \
-#                        --stack-name BowlingCokeMoney \
-#                        --region ap-southeast-2 \
-#                        --no-prompts
+                    mv ./manifest.json ./public/build/manifest.json;
 
             -   name: Deploy
                 run: |
