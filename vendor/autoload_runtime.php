@@ -5,6 +5,8 @@
 echo '[PAGEY] in autoload_runtime.php - start' . \PHP_EOL;
 \print_r($_SERVER);
 
+require_once __DIR__.'/autoload.php';
+
 //if (true === (require_once __DIR__.'/autoload.php') || empty($_SERVER['SCRIPT_FILENAME'])) {
 //    return;
 //}
