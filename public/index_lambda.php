@@ -14,4 +14,4 @@ require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
 $kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
 $kernel->boot();
 
-$handler = new SymfonyHttpHandler($kernel);
+return new SymfonyHttpHandler($kernel);
