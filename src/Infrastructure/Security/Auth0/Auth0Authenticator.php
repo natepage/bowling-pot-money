@@ -5,6 +5,7 @@ namespace App\Infrastructure\Security\Auth0;
 
 use App\Infrastructure\Auth0\Auth0Sdk;
 use Bugsnag\Client;
+use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -19,7 +20,7 @@ final class Auth0Authenticator extends AbstractAuthenticator
 {
     public function __construct(
         private readonly Auth0Sdk $auth0Sdk,
-        private readonly Client $bugsnag,
+        private readonly ErrorHandlerInterface $errorHandler,
     ) {
     }
 
@@ -30,7 +31,7 @@ final class Auth0Authenticator extends AbstractAuthenticator
         } catch (Throwable $throwable) {
             $newThrowable = new AuthenticationException($throwable->getMessage(), (int)$throwable->getCode(), $throwable);
 
-            $this->bugsnag->notifyException($newThrowable);
+            $this->errorHandler->report($newThrowable);
 
             throw $newThrowable;
         }

@@ -38,7 +38,7 @@ Resources:
         AttributeName: expires
         Enabled: true
 
-        # ------ API ------
+  # ------ API ------
   HttpApiGateway:
     Type: AWS::Serverless::HttpApi
     Properties:

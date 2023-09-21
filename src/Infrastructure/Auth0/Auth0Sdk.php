@@ -26,8 +26,6 @@ final class Auth0Sdk
             $request->query->get('state')
         );
 
-        \dd($this->auth0->getAccessToken());
-
         return $this->auth0->getUser();
     }
 
