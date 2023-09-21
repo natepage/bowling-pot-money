@@ -44,8 +44,8 @@ jobs:
 
             -   name: Copy assets to s3
                 run: |
-                    aws s3 sync "./public/build" "s3://static-assets.bowlingcokemoney.com/public/build" --delete --recursive
-                    aws s3 sync "./public/bundles" "s3://static-assets.bowlingcokemoney.com/public/bundles" --delete --recursive
+                    aws s3 sync ./public/build s3://static-assets.bowlingcokemoney.com/public/build --delete
+                    aws s3 sync ./public/bundles s3://static-assets.bowlingcokemoney.com/public/bundles --delete
 
 #            -   name: Delete
 #                run: |
