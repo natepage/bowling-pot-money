@@ -5,9 +5,9 @@
 echo '[PAGEY] in autoload_runtime.php - start' . \PHP_EOL;
 \print_r($_SERVER);
 
-if (true === (require_once __DIR__.'/autoload.php') || empty($_SERVER['SCRIPT_FILENAME'])) {
-    return;
-}
+//if (true === (require_once __DIR__.'/autoload.php') || empty($_SERVER['SCRIPT_FILENAME'])) {
+//    return;
+//}
 
 echo '[PAGEY] in autoload_runtime.php - after first if' . \PHP_EOL;
 
