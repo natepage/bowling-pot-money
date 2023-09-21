@@ -90,7 +90,7 @@ final class LambdaRuntime
         try {
             $result = $this->invoker->invoke($handler, $event, $context);
 
-            //$this->sendResponse($context->getAwsRequestId(), $result);
+            $this->sendResponse($context->getAwsRequestId(), $result);
         } catch (Throwable $e) {
             $this->signalFailure($context->getAwsRequestId(), $e);
 

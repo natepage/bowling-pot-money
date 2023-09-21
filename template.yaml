@@ -52,7 +52,7 @@ Resources:
       FunctionName: !Sub '${AWS::StackName}-Website'
       Description: !Sub 'Public website for ${AWS::StackName}'
       CodeUri: .
-      Handler: public/index.php
+      Handler: public/index_lambda.php
       Timeout: 30 # in seconds (API Gateway has a timeout of 30 seconds)
       MemorySize: 512
       Runtime: provided.al2
