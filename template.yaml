@@ -38,6 +38,39 @@ Resources:
         AttributeName: expires
         Enabled: true
 
+  # ------ S3 Bucket Static Assets ------
+  StaticAssetsS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: static-assets.bowlingcokemoney.com
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      VersioningConfiguration:
+        Status: Disabled
+
+  StaticAssetsS3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref StaticAssetsS3Bucket
+      PolicyDocument:
+        Statement:
+          - Sid: DenyNotHttpsTraffic
+            Effect: Deny
+            Principal: *
+            Action: s3:*
+            Resource:
+              - !Sub ${StaticAssetsS3Bucket.Arn}/*
+              - !GetAtt StaticAssetsS3Bucket.Arn
+            Condition:
+              Bool:
+                'aws:SecureTransport': false
+
   # ------ API ------
   HttpApiGateway:
     Type: AWS::Serverless::HttpApi
