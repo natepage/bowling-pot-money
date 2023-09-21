@@ -1,7 +1,7 @@
 <?php
 
+use App\Infrastructure\Bref\SymfonyHttpHandler;
 use App\Infrastructure\HttpKernel\Kernel;
-use Runtime\Bref\SymfonyHttpHandler;
 use Symfony\Component\Dotenv\Dotenv;
 
 require_once dirname(__DIR__).'/vendor/autoload_runtime.php';

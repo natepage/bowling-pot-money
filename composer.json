@@ -22,7 +22,7 @@
         "laminas/laminas-uri": "^2.5",
         "nesbot/carbon": "^2.66",
         "nyholm/psr7": "^1.5",
-        "runtime/bref": "^0.3.1",
+        "riverline/multipart-parser": "^2.1",
         "symfony/console": "6.2.*",
         "symfony/dotenv": "6.2.*",
         "symfony/flex": "^2",

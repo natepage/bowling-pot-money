@@ -16,6 +16,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/../src/**/Config/*.php',
             __DIR__ . '/../src/DependencyInjection/',
             __DIR__ . '/../src/Entity/',
+            __DIR__ . '/../src/Infrastructure/Bref/',
             __DIR__ . '/../src/Infrastructure/HttpKernel/Kernel.php',
     ]);
 
