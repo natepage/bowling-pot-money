@@ -28,6 +28,8 @@ $runtime = new $runtime(($_SERVER['APP_RUNTIME_OPTIONS'] ?? $_ENV['APP_RUNTIME_O
     ->getResolver($app)
     ->resolve();
 
+echo '[PAGEY] in autoload_runtime.php - execute app closure'. \PHP_EOL;
+
 $app = $app(...$args);
 
 echo '[PAGEY] in autoload_runtime.php - app type: ' . \get_class($app) . \PHP_EOL;
