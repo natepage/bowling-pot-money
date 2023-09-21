@@ -49,19 +49,21 @@ jobs:
             -   name: Clean up files
                 run: |
                     # Move ./public/build/entrypoints.json as Symfony needs it
-                    mv ./public/build/entrypoints.json ./entrypoints.json
+                    mv ./public/build/entrypoints.json ./entrypoints.json;
+                    
                     # Remove not needed files to save space in lambda function
                     rm -rf \
-                        ./node_modules
-                        ./public/build
-                        ./public/bundles
-                        ./public/index.php
-                        ./docker-compose.yml
-                        ./package.json
-                        ./webpack.config.js
-                        ./yarn.lock
+                        ./node_modules \
+                        ./public/build \
+                        ./public/bundles \
+                        ./public/index.php \
+                        ./docker-compose.yml \
+                        ./package.json \
+                        ./webpack.config.js \
+                        ./yarn.lock;
+                    
                     # Move entrypoints.json back as Symfony needs it
-                    mv ./entrypoints.json ./public/build/entrypoints.json
+                    mv ./entrypoints.json ./public/build/entrypoints.json;
 
 #            -   name: Delete
 #                run: |
