@@ -40,6 +40,8 @@ class Main
 
         /** @phpstan-ignore-next-line */
         while (true) {
+            echo "[PAGEY] in while loop in Main.php" . \PHP_EOL;
+
             $lambdaRuntime->processNextEvent($phpFpm);
         }
     }

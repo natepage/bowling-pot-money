@@ -85,7 +85,7 @@ final class LambdaRuntime
 
         $this->ping();
 
-        echo $context->getAwsRequestId() . "\tPagey Logging InvocationId\t" . \PHP_EOL;
+        echo "[PAGEY] invocationId: " . $context->getAwsRequestId() . \PHP_EOL;
 
         try {
             $result = $this->invoker->invoke($handler, $event, $context);
