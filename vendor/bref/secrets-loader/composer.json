@@ -1,0 +1,31 @@
+{
+    "name": "bref/secrets-loader",
+    "description": "Load secret values from SSM into environment variables ",
+    "keywords": ["bref", "secrets", "aws-ssm", "ssm"],
+    "license": "MIT",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Bref\\Secrets\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Bref\\Secrets\\Test\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=8.0",
+        "async-aws/ssm": "^1.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6.10",
+        "mnapoli/hard-mode": "^0.3.0",
+        "phpstan/phpstan": "^1.10.26"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}
