@@ -133,7 +133,7 @@ Resources:
         Runtime: cloudfront-js-1.0
       FunctionCode: |-
         function handler(event) {
-          let request = event.request;
+          var request = event.request;
           
           request.headers['x-forwarded-host'] = {value: request.headers.host.value};
           
