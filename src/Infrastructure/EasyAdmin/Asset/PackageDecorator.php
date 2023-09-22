@@ -20,6 +20,6 @@ final class PackageDecorator implements PackageInterface
 
     public function getUrl(string $path): string
     {
-        return \sprintf('/public/%s', $this->decorated->getUrl($path));
+        return \sprintf('/public%s', $this->decorated->getUrl($path));
     }
 }
