@@ -171,7 +171,6 @@ Resources:
         PriceClass: PriceClass_All # Only price class that supports AU
         ViewerCertificate:
           AcmCertificateArn: !Ref GenerateCertificate
-          CloudFrontDefaultCertificate: false
           MinimumProtocolVersion: TLSv1.2_2021
           SslSupportMethod: sni-only
 
