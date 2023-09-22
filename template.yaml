@@ -6,6 +6,10 @@ Parameters:
     Type: String
     Description: The custom domain name for the API
     Default: bowlingcokemoney.com
+  PublicCertificateArn:
+    Type: String
+    Description: ARN of public certificate created in us-east-1
+    Default: 'arn:aws:acm:us-east-1:821127981040:certificate/cf4bb212-72b3-4d80-9809-c08395a64064'
   HostedZoneId:
     Type: String
     Description: Route53 HostedZone ID for custom domain
@@ -61,16 +65,6 @@ Resources:
               Bool:
                 'aws:SecureTransport': false
 
-  # ------ API ------
-#  HttpApiGateway:
-#    Type: AWS::Serverless::HttpApi
-#    Properties:
-#      Domain:
-#        DomainName: !Ref CustomDomainName
-#        CertificateArn: !Ref GenerateCertificate
-#        Route53:
-#          HostedZoneId: !Ref HostedZoneId
-
   # ------ Lambda ------
   Website:
     Type: AWS::Serverless::Function
@@ -120,47 +114,47 @@ Resources:
             Resource: !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/app/*'
 
   # ------ CloudFront ------
-#  CloudFrontS3OriginAccessControl:
-#    Type: AWS::CloudFront::OriginAccessControl
-#    Properties:
-#      OriginAccessControlConfig:
-#        Name: !Sub '${AWS::StackName}-S3CloudFrontS3OriginAccessControl'
-#        Description: !Sub '${AWS::StackName}-S3CloudFrontS3OriginAccessControl'
-#        OriginAccessControlOriginType: s3
-#        SigningBehavior: always
-#        SigningProtocol: sigv4
+  CloudFrontS3OriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub '${AWS::StackName}-S3CloudFrontS3OriginAccessControl'
+        Description: !Sub '${AWS::StackName}-S3CloudFrontS3OriginAccessControl'
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
 
-#  CloudFrontDistribution:
-#    Type: AWS::CloudFront::Distribution
-#    Properties:
-#      DistributionConfig:
-#        Enabled: true
-#        Aliases:
-#          - !Ref CustomDomainName
-#        DefaultCacheBehavior:
-#          AllowedMethods:
-#            - GET
-#            - HEAD
-#            - OPTIONS
-#          CachedMethods:
-#            - GET
-#            - HEAD
-#            - OPTIONS
-#          CachePolicyId: '658327ea-f89d-4fab-a63d-7e88639e58f6' # Managed-CachingOptimized
-#          OriginRequestPolicyId: '88a5eaf4-2fd4-4709-b370-b4c650ea3fcf' # Managed-CORS-S3Origin
-#          Compress: true
-#          TargetOriginId: StaticAssetsS3BucketOrigin
-#          ViewerProtocolPolicy: redirect-to-https
-#        Origins:
-#          - Id: StaticAssetsS3BucketOrigin
-#            DomainName: !GetAtt StaticAssetsS3Bucket.RegionalDomainName
-#            OriginAccessControlId: !Ref CloudFrontS3OriginAccessControl
-#            S3OriginConfig: {}
-#        PriceClass: PriceClass_All # Only price class that supports AU
-#        ViewerCertificate:
-#          AcmCertificateArn: !Ref GenerateCertificate
-#          MinimumProtocolVersion: TLSv1.2_2021
-#          SslSupportMethod: sni-only
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Aliases:
+          - !Ref CustomDomainName
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          CachedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          CachePolicyId: '658327ea-f89d-4fab-a63d-7e88639e58f6' # Managed-CachingOptimized
+          OriginRequestPolicyId: '88a5eaf4-2fd4-4709-b370-b4c650ea3fcf' # Managed-CORS-S3Origin
+          Compress: true
+          TargetOriginId: StaticAssetsS3BucketOrigin
+          ViewerProtocolPolicy: redirect-to-https
+        Origins:
+          - Id: StaticAssetsS3BucketOrigin
+            DomainName: !GetAtt StaticAssetsS3Bucket.RegionalDomainName
+            OriginAccessControlId: !Ref CloudFrontS3OriginAccessControl
+            S3OriginConfig: {}
+        PriceClass: PriceClass_All # Only price class that supports AU
+        ViewerCertificate:
+          AcmCertificateArn: !Ref PublicCertificateArn
+          MinimumProtocolVersion: TLSv1.2_2021
+          SslSupportMethod: sni-only
 
 Outputs:
   BowlingCokeMoneyWebsiteUrl:
