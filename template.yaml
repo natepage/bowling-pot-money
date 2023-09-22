@@ -157,10 +157,10 @@ Resources:
             OriginAccessControlId: !Ref CloudFrontS3OriginAccessControl
             S3OriginConfig: {}
         PriceClass: PriceClass_All # Only price class that supports AU
-        ViewerCertificate:
-          AcmCertificateArn: !Ref GenerateCertificate
-          MinimumProtocolVersion: TLSv1.2_2021
-          SslSupportMethod: sni-only
+#        ViewerCertificate:
+#          AcmCertificateArn: !Ref GenerateCertificate
+#          MinimumProtocolVersion: TLSv1.2_2021
+#          SslSupportMethod: sni-only
 
 Outputs:
   BowlingCokeMoneyWebsiteUrl:
