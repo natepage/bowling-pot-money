@@ -165,6 +165,25 @@ Resources:
           MinimumProtocolVersion: TLSv1.2_2021
           SslSupportMethod: sni-only
 
+  # ------ Route53 ------
+  CloudFrontRoute53RecordSetGroup:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneId: !Ref HostedZoneId
+      RecordSets:
+        - AliasTarget:
+            DNSName: !GetAtt CloudFrontDistribution.DomainName
+            EvaluateTargetHealth: false
+            HostedZoneId: Z2FDTNDATAQYW2 # Default CloudFront HostedZoneId
+          Name: !Ref CustomDomainName
+          Type: A
+        - AliasTarget:
+            DNSName: !GetAtt CloudFrontDistribution.DomainName
+            EvaluateTargetHealth: false
+            HostedZoneId: Z2FDTNDATAQYW2 # Default CloudFront HostedZoneId
+          Name: !Ref CustomDomainName
+          Type: AAAA
+
 Outputs:
   BowlingCokeMoneyWebsiteUrl:
     Description: 'URL of our function'
