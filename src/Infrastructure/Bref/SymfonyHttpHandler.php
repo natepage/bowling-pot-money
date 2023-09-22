@@ -12,9 +12,15 @@ use Symfony\Component\HttpKernel\TerminableInterface;
 
 class SymfonyHttpHandler extends HttpHandler
 {
+    private const TRUSTED_HEADER_SET = Request::HEADER_X_FORWARDED_FOR
+        | Request::HEADER_X_FORWARDED_HOST
+        | Request::HEADER_X_FORWARDED_PORT
+        | Request::HEADER_X_FORWARDED_PROTO;
+
     public function __construct(private readonly HttpKernelInterface $kernel)
     {
-        Request::setTrustedProxies(['127.0.0.1'], Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO);
+        // Add REMOTE_ADDR as app runs behind CloudFront
+        Request::setTrustedProxies(['127.0.0.1', 'REMOTE_ADDR'], self::TRUSTED_HEADER_SET);
     }
 
     /**
