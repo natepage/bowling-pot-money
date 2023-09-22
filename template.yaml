@@ -12,16 +12,6 @@ Parameters:
     Default: Z02043462K7X1948WL5PW
 
 Resources:
-  # ------ CustomDomain Certificate ------
-  GenerateCertificate:
-    Type: AWS::CertificateManager::Certificate
-    Properties:
-      DomainName: !Ref CustomDomainName
-      ValidationMethod: DNS
-      DomainValidationOptions:
-        - DomainName: !Ref CustomDomainName
-          HostedZoneId: !Ref HostedZoneId
-
   # ------ DynamoDB Table ------
   SessionsDynamoDbTable:
     Type: AWS::DynamoDB::Table
@@ -72,14 +62,14 @@ Resources:
                 'aws:SecureTransport': false
 
   # ------ API ------
-  HttpApiGateway:
-    Type: AWS::Serverless::HttpApi
-    Properties:
-      Domain:
-        DomainName: !Ref CustomDomainName
-        CertificateArn: !Ref GenerateCertificate
-        Route53:
-          HostedZoneId: !Ref HostedZoneId
+#  HttpApiGateway:
+#    Type: AWS::Serverless::HttpApi
+#    Properties:
+#      Domain:
+#        DomainName: !Ref CustomDomainName
+#        CertificateArn: !Ref GenerateCertificate
+#        Route53:
+#          HostedZoneId: !Ref HostedZoneId
 
   # ------ Lambda ------
   Website:
@@ -97,8 +87,6 @@ Resources:
       Events:
         HttpRoot:
           Type: HttpApi
-          Properties:
-            ApiId: !Ref HttpApiGateway
       Environment:
         Variables:
           APP_ENV: prod
