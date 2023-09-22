@@ -140,6 +140,37 @@ Resources:
           return request;
         }
 
+  CloudFrontLogS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: cloudfront-logs.bowlingcokemoney.com
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerPreferred
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      VersioningConfiguration:
+        Status: Suspended
+
+  CloudFrontLogS3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref CloudFrontLogS3Bucket
+      PolicyDocument:
+        Statement:
+          - Effect: Deny
+            Principal: '*'
+            Action: 's3:*'
+            Resource:
+              - !Sub "${CloudFrontLogS3Bucket.Arn}/*"
+              - !GetAtt 'CloudFrontLogS3Bucket.Arn'
+            Condition:
+              Bool:
+                'aws:SecureTransport': false
+
   CloudFrontS3OriginAccessControl:
     Type: AWS::CloudFront::OriginAccessControl
     Properties:
@@ -219,6 +250,10 @@ Resources:
           AcmCertificateArn: !Ref PublicCertificateArn
           MinimumProtocolVersion: TLSv1.2_2021
           SslSupportMethod: sni-only
+        Logging:
+          Bucket: !Ref CloudFrontLogS3Bucket
+          IncludeCookies: false
+          Prefix: !Sub 'AWSLogs/${AWS::AccountId}/CloudFront/'
 
   # ------ Route53 ------
   CloudFrontRoute53RecordSetGroup:
