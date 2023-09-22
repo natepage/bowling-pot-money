@@ -251,7 +251,7 @@ Resources:
           MinimumProtocolVersion: TLSv1.2_2021
           SslSupportMethod: sni-only
         Logging:
-          Bucket: !Ref CloudFrontLogS3Bucket
+          Bucket: !GetAtt CloudFrontLogS3Bucket.DomainName
           IncludeCookies: false
           Prefix: !Sub 'AWSLogs/${AWS::AccountId}/CloudFront/'
 
