@@ -57,7 +57,7 @@ Resources:
           - Sid: AllowCloudFrontDistributionReadOnly
             Effect: Allow
             Principal:
-              Service: !Sub 'cloudfront.${AWS.URLSuffix}'
+              Service: !Sub 'cloudfront.${AWS::URLSuffix}'
             Action: 's3:GetObject'
             Resource: !Sub '${StaticAssetsS3Bucket.Arn}/*'
             Condition:
