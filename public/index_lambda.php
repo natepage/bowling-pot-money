@@ -1,6 +1,6 @@
 <?php
 
-use App\Infrastructure\Bref\SymfonyHttpHandler;
+use App\Infrastructure\Bref\Runtime\SymfonyHttpHandler;
 use App\Infrastructure\HttpKernel\Kernel;
 use EonX\EasyBugsnag\Interfaces\ValueOptionInterface as EasyBugsnagValueOptionInterface;
 use Symfony\Component\Dotenv\Dotenv;

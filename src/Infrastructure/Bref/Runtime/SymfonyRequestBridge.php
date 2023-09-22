@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Bref;
+namespace App\Infrastructure\Bref\Runtime;
 
 use Bref\Context\Context;
 use Bref\Event\Http\HttpRequestEvent;

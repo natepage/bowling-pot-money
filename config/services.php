@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Infrastructure\Bref\AdminContextAsTwigGlobalListener;
 use App\Infrastructure\EasyAdmin\Asset\PackageDecorator;
 use AsyncAws\DynamoDb\DynamoDbClient;
 use AsyncAws\DynamoDbSession\SessionHandler as DynamoDbSessionHandler;
@@ -21,7 +22,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '/../src/**/Config/*.php',
             __DIR__ . '/../src/DependencyInjection/',
             __DIR__ . '/../src/Entity/',
-            __DIR__ . '/../src/Infrastructure/Bref/',
+            __DIR__ . '/../src/Infrastructure/Bref/Runtime/',
             __DIR__ . '/../src/Infrastructure/HttpKernel/Kernel.php',
     ]);
 
@@ -39,4 +40,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(PackageDecorator::class)
         ->decorate(AssetPackage::class)
         ->arg('$decorated', service('.inner'));
+
+    // Fix easy-admin in twig
+    $services
+        ->set(AdminContextAsTwigGlobalListener::class)
+        ->tag('kernel.event_listener', [
+            'priority' => -100,
+        ]);
 };
