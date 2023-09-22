@@ -7,6 +7,9 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->extension('framework', [
+        'assets' => [
+            'base_path' => '/public',
+        ],
         'secret' => '%env(APP_SECRET)%',
         'http_method_override' => false,
         'handle_all_throwables' => true,
