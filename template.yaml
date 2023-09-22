@@ -54,6 +54,15 @@ Resources:
       Bucket: !Ref StaticAssetsS3Bucket
       PolicyDocument:
         Statement:
+          - Sid: AllowCloudFrontDistributionReadOnly
+            Effect: Allow
+            Principal:
+              Service: !Sub 'cloudfront.${AWS.URLSuffix}'
+            Action: 's3:GetObject'
+            Resource: !Sub '${StaticAssetsS3Bucket.Arn}/*'
+            Condition:
+              ArnEquals:
+                'aws:SourceArn': !Sub 'arn:${AWS::Partition}:cloudfront::${AWS::AccountId}:distribution/${CloudFrontDistribution}'
           - Sid: DenyNotHttpsTraffic
             Effect: Deny
             Principal: '*'
