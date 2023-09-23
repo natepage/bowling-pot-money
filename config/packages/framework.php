@@ -11,7 +11,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         'http_method_override' => false,
         'handle_all_throwables' => true,
         'session' => [
-            'handler_id' => DynamoDbSessionHandler::class,
+            'handler_id' => null,
             'cookie_secure' => 'auto',
             'cookie_samesite' => 'lax',
             'storage_factory_id' => 'session.storage.factory.native',
@@ -20,6 +20,14 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'log' => true,
         ],
     ]);
+
+    if ($containerConfigurator->env() === 'prod') {
+        $containerConfigurator->extension('framework', [
+            'session' => [
+                'handler_id' => DynamoDbSessionHandler::class,
+            ],
+        ]);
+    }
 
     if ($containerConfigurator->env() === 'test') {
         $containerConfigurator->extension('framework', [

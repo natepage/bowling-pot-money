@@ -10,7 +10,7 @@ Encore
     // directory where compiled assets will be stored
     .setOutputPath('public/build/')
     // public path used by the web server to access the output path
-    .setPublicPath('public/build')
+    .setPublicPath(Encore.isProduction() ? 'public/build' : 'build')
 
     /*
      * ENTRY CONFIG

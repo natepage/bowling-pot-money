@@ -13,7 +13,7 @@ final class Auth0LogoutListener
 {
     public function __construct(
         private readonly Auth0Sdk $auth0Sdk,
-        private readonly RouterInterface $router
+        private readonly RouterInterface $router,
     ) {
     }
 
@@ -22,7 +22,12 @@ final class Auth0LogoutListener
      */
     public function __invoke(LogoutEvent $event): void
     {
-        $redirectTo = $this->router->generate('admin_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $request = $event->getRequest();
+        $referer = $request->headers->get('referer');
+
+        $redirectToRoute = \is_string($referer) && \str_contains($referer, 'admin') ? 'admin_index' : 'web_homepage';
+        $redirectTo = $this->router->generate($redirectToRoute, [],  UrlGeneratorInterface::ABSOLUTE_URL);
+
         $logoutUrl = $this->auth0Sdk->logoutUrl($redirectTo);
 
         $event->setResponse(new RedirectResponse($logoutUrl));

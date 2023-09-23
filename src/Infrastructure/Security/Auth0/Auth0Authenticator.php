@@ -55,6 +55,6 @@ final class Auth0Authenticator extends AbstractAuthenticator
 
     public function supports(Request $request): ?bool
     {
-        return $request->isMethod('GET') && $request->getPathInfo() === '/admin/auth0/callback';
+        return $request->isMethod('GET') && $request->getPathInfo() === '/security/auth0/callback';
     }
 }

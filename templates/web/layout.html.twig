@@ -30,6 +30,12 @@
                         <span class="sidebar-item-text hidden">Teams</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('logout') }}">
+                        <i class="sidebar-item-icon fa-solid fa-right-from-bracket fa-2x"></i>
+                        <span class="sidebar-item-text hidden">Logout</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
@@ -38,7 +44,9 @@
     <header class="navbar navbar-dark main-navbar">
         <div class="container-fluid">
             <div class="navbar-wrapper">
-                <div class="navbar-title">Bowling Pot Money</div>
+                <div class="navbar-title">
+                    <a href="{{ path('web_homepage') }}">Bowling Pot Money</a>
+                </div>
             </div>
         </div>
         <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
