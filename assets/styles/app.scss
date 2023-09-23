@@ -40,15 +40,17 @@ $theme-containers-border-radius: 5px;
   }
 
   .main-content-wrapper {
-    padding: $theme-containers-padding-top 30px 30px 280px;
     min-height: calc(100vh - 70px);
+    padding-top: $theme-containers-padding-top;
 
-    @include media-breakpoint-up(md) {
-      padding-left: 205px;
-    }
-    @include media-breakpoint-down(md) {
-      padding-left: 30px;
-    }
+    //padding: $theme-containers-padding-top 30px 30px 280px;
+    //
+    //@include media-breakpoint-up(md) {
+    //  padding-left: 205px;
+    //}
+    //@include media-breakpoint-down(md) {
+    //  padding-left: 30px;
+    //}
 
     .main-content {
     }
