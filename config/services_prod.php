@@ -16,15 +16,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure();
 
-    $services->load('App\\', __DIR__ . '/../src/')
-        ->exclude([
-            __DIR__ . '/../src/**/Config/*.php',
-            __DIR__ . '/../src/DependencyInjection/',
-            __DIR__ . '/../src/Entity/',
-            __DIR__ . '/../src/Infrastructure/Bref/Runtime/',
-            __DIR__ . '/../src/Infrastructure/HttpKernel/Kernel.php',
-    ]);
-
     // DynamoDB session handler
     $services->set(DynamoDbClient::class);
     $services
