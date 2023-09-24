@@ -61,7 +61,7 @@ class SymfonyRequestBridge
         $parsedBody = null;
         $contentType = $event->getContentType();
         if (null !== $contentType && 'POST' === $event->getMethod()) {
-            if ('application/x-www-form-urlencoded' === $contentType) {
+            if (\str_starts_with($contentType, 'application/x-www-form-urlencoded')) {
                 parse_str($bodyString, $parsedBody);
             } else {
                 $stream = fopen('php://temp', 'rw');
