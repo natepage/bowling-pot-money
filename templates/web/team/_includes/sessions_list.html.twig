@@ -1,0 +1,33 @@
+{% if sessions|length > 0 %}
+    <div class="table-responsive">
+        <table class="table">
+            <thead class="text-primary">
+            <tr>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Link</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for session in sessions %}
+                <tr>
+                    <td>{{ session.createdAt|date('d/m/Y') }}</td>
+                    <td>{{ renderComponentBadge(session.status) }}</td>
+                    <td>
+                        <a href="{{ path('teams_show_session', {'teamId': team.id, 'sessionId': session.id}) }}"
+                           target="_top"
+                           class="no-decoration-link"
+                        >
+                            <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div style="width: 100%; text-align: center">
+        <span>No sessions yet...</span>
+    </div>
+{% endif %}

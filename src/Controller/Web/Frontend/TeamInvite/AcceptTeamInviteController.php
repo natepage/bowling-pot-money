@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controller\Web\TeamInvite;
+namespace App\Controller\Web\Frontend\TeamInvite;
 
 use App\Repository\TeamInviteRepository;
 use App\Team\TeamInvite\TeamInviteAcceptor;

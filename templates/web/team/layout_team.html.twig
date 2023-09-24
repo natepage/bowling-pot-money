@@ -1,6 +1,6 @@
-{% extends 'web/turboFrame/base_turbo_frame.html.twig' %}
+{% extends 'web/layout.html.twig' %}
 
-{% block frameContent %}
+{% block body %}
     <div class="row row-cols-1 row-cols-md-1 g-4">
         <div class="col">
             <h2 class="team-show-title">
@@ -9,6 +9,6 @@
                 </a>
             </h2>
         </div>
-        {% block showTeamContent %}{% endblock %}
+        {% block team_body %}{% endblock %}
     </div>
 {% endblock %}

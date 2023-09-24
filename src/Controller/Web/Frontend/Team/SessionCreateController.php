@@ -1,31 +1,33 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controller\Web\Team;
+namespace App\Controller\Web\Frontend\Team;
 
 use App\Controller\Web\AbstractWebController;
 use App\Form\CreateSessionForm;
-use App\Repository\TeamMemberRepository;
+use App\Repository\TeamRepository;
 use App\Session\SessionManager;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/teams/{teamId}/sessions/new', name: 'teams_create_session', methods: ['GET', 'POST'])]
-final class CreateSessionController extends AbstractWebController
+#[Route(
+    path: '/teams/{teamId}/sessions/new',
+    name: 'teams_create_session',
+    methods: [Request::METHOD_GET, Request::METHOD_POST]
+)]
+final class SessionCreateController extends AbstractWebController
 {
     public function __construct(
-        private readonly TeamMemberRepository $teamMemberRepository,
+        private readonly TeamRepository $teamRepository,
         private readonly SessionManager $sessionManager
     ) {
     }
 
-    protected function doInvoke(Request $request): Response
+    public function __invoke(Request $request, string $teamId): Response
     {
-        $teamId = $request->attributes->get('teamId');
-        $teamMembers = $this->teamMemberRepository->findByTeamIdWithTeamAndUser($teamId);
-        $team = \current($teamMembers)->getTeam();
+        $team = $this->teamRepository->find($teamId);
 
         $form = $this
             ->createForm(CreateSessionForm::class)
@@ -43,7 +45,7 @@ final class CreateSessionController extends AbstractWebController
             }
         }
 
-        return $this->render('web/turboFrame/team/session_create.html.twig', [
+        return $this->render('web/team/session_create.html.twig', [
             'form' => $form,
             'team' => $team,
         ]);

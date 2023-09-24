@@ -2,31 +2,30 @@
 
 declare(strict_types=1);
 
-use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
-    $imports = [
-        'admin' => 'Admin',
-        'api' => 'Api',
-        'web' => 'Web',
-    ];
+    // Admin
+    $routingConfigurator->import([
+        'path' => __DIR__ . '/../src/Controller/Admin',
+        'namespace' => 'App\Controller\Admin',
+    ], 'attribute');
 
-    foreach ($imports as $group => $folder) {
-        $importConfigurator = $routingConfigurator->import([
-            'path' => \sprintf('../src/Controller/%s/', $folder),
-            'namespace' => \sprintf('App\Controller\%s', $folder),
-        ], 'attribute');
+    // Api
+    $routingConfigurator->import([
+        'path' => __DIR__ . '/../src/Controller/Api',
+        'namespace' => 'App\Controller\Api',
+    ], 'attribute')->prefix('api');
 
-        if ($group === 'api') {
-            $importConfigurator->prefix('/api');
-        }
-    }
+    // Web Frontend
+    $routingConfigurator->import([
+        'path' => __DIR__ . '/../src/Controller/Web/Frontend',
+        'namespace' => 'App\Controller\Web\Frontend',
+    ], 'attribute');
 
-    $routingConfigurator
-        ->add('web_homepage', '/')
-        ->controller(RedirectController::class)
-        ->defaults([
-            'route' => 'teams_list',
-        ]);
+    // Web Turbo frames
+    $routingConfigurator->import([
+        'path' => __DIR__ . '/../src/Controller/Web/TurboFrame',
+        'namespace' => 'App\Controller\Web\TurboFrame',
+    ], 'attribute')->prefix('_frame');
 };

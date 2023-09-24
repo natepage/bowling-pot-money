@@ -1,25 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controller\Web\Team;
+namespace App\Controller\Web\Frontend\Team;
 
-use App\Controller\Web\AbstractWebController;
-use App\Form\CreateSessionForm;
+use App\Controller\Web\TurboFrame\AbstractTurboFrameController;
 use App\Form\CreateTeamInviteForm;
 use App\Form\Dto\CreateTeamInviteDto;
-use App\Repository\TeamMemberRepository;
 use App\Repository\TeamRepository;
-use App\Session\SessionManager;
 use App\Team\TeamInvite\TeamInviteFactory;
 use App\Team\TeamInvite\TeamInvitePersister;
 use App\Team\TeamInvite\TeamInviteSender;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/teams/{teamId}/teamInvites/new', name: 'teams_create_team_invite', methods: ['GET', 'POST'])]
-final class CreateTeamInviteController extends AbstractWebController
+final class CreateTeamInviteController extends AbstractTurboFrameController
 {
     public function __construct(
         private readonly TeamInviteFactory $teamInviteFactory,

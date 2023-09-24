@@ -3,57 +3,43 @@ declare(strict_types=1);
 
 namespace App\Controller\Web;
 
+use App\Common\Traits\DealsWithSecurity;
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route as RouteAttribute;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class AbstractWebController extends AbstractController
 {
-    private ?string $turboFrameId = null;
+    use DealsWithSecurity;
 
-    public function __invoke(Request $request): Response
+    private Security $security;
+
+    #[Required]
+    public function setSecurity(Security $security): void
     {
-        $this->turboFrameId = $request->headers->get('Turbo-Frame');
-
-        // No turbo frame id means we're rendering the whole page
-        if ($this->turboFrameId === null) {
-            return $this->renderPage($request);
-        }
-
-        return $this->doInvoke($request);
+        $this->security = $security;
     }
 
-    abstract protected function doInvoke(Request $request): Response;
-
-    protected function getFrameRouteParams(Request $request): ?array
+    /**
+     * @param \App\Entity\TeamMember[] $teamMembers
+     */
+    protected function canAccessTeam(array $teamMembers): bool
     {
-        return null;
-    }
+        $user = $this->getCurrentUser();
 
-    protected function renderPage(Request $request): Response
-    {
-        $route = $request->attributes->get('_route');
-
-        if ($route === null) {
-            $attribute = (new \ReflectionClass($this))->getAttributes(RouteAttribute::class)[0];
-            $route = $attribute->getArguments()['name'];
+        foreach ($teamMembers as $teamMember) {
+            if ($teamMember->getUser()->getId() === $user->getId()) {
+                return true;
+            }
         }
 
-        return $this->render('web/page.html.twig', [
-            'frameRoute' => $route,
-            'frameRouteParams' => $request->attributes->get('_route_params') ?? [],
-        ]);
+        return false;
     }
 
-    protected function render(string $view, ?array $parameters = null, ?Response $response = null): Response
+    protected function getCurrentUser(): User
     {
-        $parameters ??= [];
-
-        if (\is_string($this->turboFrameId) && $this->turboFrameId !== '') {
-            $parameters['turboFrameId'] = $this->turboFrameId;
-        }
-
-        return parent::render($view, $parameters, $response);
+        // TODO: Throw exception if user null as it should never be
+        return $this->getDbUser($this->security);
     }
 }
