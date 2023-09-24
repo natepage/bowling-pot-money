@@ -29,8 +29,6 @@ final class SessionCreateController extends AbstractWebController
 
     public function __invoke(Request $request, string $teamId): Response
     {
-        $this->errorHandler->report(new \RuntimeException('debug post request'));
-
         $team = $this->teamRepository->find($teamId);
 
         $form = $this
@@ -45,6 +43,8 @@ final class SessionCreateController extends AbstractWebController
                     'teamId' => $teamId,
                 ]);
             } catch (\Throwable $throwable) {
+                $this->errorHandler->report($throwable);
+
                 $form->addError(new FormError('Not implemented yet'));
             }
         }
