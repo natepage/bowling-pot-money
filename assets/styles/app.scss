@@ -111,6 +111,21 @@ a.no-decoration-link {
   }
 }
 
+// Session achievement assign
+.photo-container {
+  .photo {
+    height: 55px;
+    width: 55px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto;
+
+    img {
+      width: 100%;
+    }
+  }
+}
+
 // TurboFrame
 .frame-loader-container {
   width: 100%;

@@ -1,0 +1,21 @@
+{% extends 'web/team/layout_team.html.twig' %}
+
+{% block team_body %}
+    <div class="col">
+        <h2 class="team-show-title">
+            <a href="{{ path('teams_show_session', {'teamId': team.id, 'sessionId': session.id}) }}" class="link-no-style">
+                Session: {{ session.createdAt|date('d/m/Y') }}
+            </a>
+        </h2>
+    </div>
+    <div class="col achievement-assign-container" data-controller="achievement-assign">
+        {{ form(form) }}
+
+        <div class="achievement-assign-member-container">
+            {{ turboFrame(
+                '_frame_achievement_assign_member',
+                path('_frame_achievement_assign_member', {'teamId': team.id, 'sessionId': session.id})
+            ) }}
+        </div>
+    </div>
+{% endblock %}

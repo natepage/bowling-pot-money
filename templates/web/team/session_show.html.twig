@@ -2,10 +2,11 @@
 
 {% block before_content %}
     {# Floating button #}
+    <div class="assign-achievement-container"></div>
     <div class="session-floating-button-container">
-        <button class="btn btn-success btn-circle">
+        <a class="btn btn-success btn-circle" href="{{ path('teams_assign_achievement', {'teamId': team.id, 'sessionId': session.id}) }}">
             <i class="fa fa-plus fa-2x"></i>
-        </button>
+        </a>
     </div>
 {% endblock %}
 
@@ -32,17 +33,6 @@
                         path('_frame_session_games_list', {'teamId': team.id, 'sessionId': session.id})
                     ) }}
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Members</h5>
-                {{ turboFrame(
-                    '_frame_session_members_list',
-                    path('_frame_session_members_list', {'teamId': team.id, 'sessionId': session.id})
-                ) }}
             </div>
         </div>
     </div>
