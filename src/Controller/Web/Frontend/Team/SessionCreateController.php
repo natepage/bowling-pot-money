@@ -7,6 +7,7 @@ use App\Controller\Web\AbstractWebController;
 use App\Form\CreateSessionForm;
 use App\Repository\TeamRepository;
 use App\Session\SessionManager;
+use App\Session\SessionMemberManager;
 use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +24,7 @@ final class SessionCreateController extends AbstractWebController
     public function __construct(
         private readonly TeamRepository $teamRepository,
         private readonly SessionManager $sessionManager,
+        private readonly SessionMemberManager $sessionMemberManager,
         private readonly ErrorHandlerInterface $errorHandler,
     ) {
     }
@@ -32,12 +34,17 @@ final class SessionCreateController extends AbstractWebController
         $team = $this->teamRepository->find($teamId);
 
         $form = $this
-            ->createForm(CreateSessionForm::class)
+            ->createForm(CreateSessionForm::class, options: ['teamId' => $teamId])
             ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var \App\Form\Dto\CreateSessionDto $data */
+            $data = $form->getData();
+
             try {
-                $this->sessionManager->openSession($team);
+                $session = $this->sessionManager->openSession($team);
+
+                $this->sessionMemberManager->addMembersByIds($session, $data->getMemberIds());
 
                 return $this->redirectToRoute('teams_show', [
                     'teamId' => $teamId,
@@ -45,7 +52,7 @@ final class SessionCreateController extends AbstractWebController
             } catch (\Throwable $throwable) {
                 $this->errorHandler->report($throwable);
 
-                $form->addError(new FormError('Not implemented yet'));
+                $form->addError(new FormError($throwable->getMessage()));
             }
         }
 

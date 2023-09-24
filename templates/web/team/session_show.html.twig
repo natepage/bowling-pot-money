@@ -2,6 +2,19 @@
 
 {% block team_body %}
     <div class="col">
-        Session content...
+        <h2 class="team-show-title">
+            Session: {{ session.createdAt|date('d/m/Y') }}
+        </h2>
+    </div>
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Members</h5>
+                {{ turboFrame(
+                    '_frame_session_members_list',
+                    path('_frame_session_members_list', {'teamId': team.id, 'sessionId': session.id})
+                ) }}
+            </div>
+        </div>
     </div>
 {% endblock %}

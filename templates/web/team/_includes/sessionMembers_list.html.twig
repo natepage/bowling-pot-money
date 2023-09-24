@@ -1,0 +1,30 @@
+{% if sessionMembers|length > 0 %}
+<div class="table-responsive">
+    <table class="table">
+        <thead class="text-primary">
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Balance</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for sessionMember in sessionMembers %}
+            <tr>
+                <td class="photo-td text-center">
+                    <div class="photo">
+                        <img src="{{ sessionMember.teamMember.user.picture }}" alt="{{ sessionMember.teamMember.user.name }}">
+                    </div>
+                </td>
+                <td>{{ sessionMember.teamMember.user.name }}</td>
+                <td>{{ sessionMember.teamMember|balance }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="text-center">
+    <span>No members yet...</span>
+</div>
+{% endif %}

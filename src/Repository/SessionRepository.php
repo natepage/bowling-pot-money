@@ -25,6 +25,17 @@ final class SessionRepository extends AbstractOptimizedDoctrineOrmRepository
             ->getResult();
     }
 
+    public function findOneByIdAndTeamId(string $id, string $teamId): ?Session
+    {
+        $session = $this->getRepository()->find($id);
+
+        if ($session instanceof Session === false || $session->getTeam()->getId() !== $teamId) {
+            return null;
+        }
+
+        return $session;
+    }
+
     public function findOpenedByTeamId(string $teamId): ?Session
     {
         return $this->getRepository()->findOneBy([
