@@ -35,6 +35,16 @@ final class SessionCreateController extends AbstractWebController
             ->createForm(CreateSessionForm::class)
             ->handleRequest($request);
 
+        if ($form->isValid() === false) {
+            $form->addError(new FormError('form not valid'));
+        }
+
+        $form->addError(new FormError('test error no matter what'));
+
+        if ($form->isSubmitted() === false) {
+            $form->addError(new FormError('form not submitted'));
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $this->sessionManager->openSession($team);
