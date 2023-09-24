@@ -1,0 +1,17 @@
+<div class="row row-cols-2 g-2">
+    {% for achievement in achievements %}
+        {% set clickAction = 'data-action="click->achievement-assign#setAchievementInputValue" data-achievement-id="' ~ achievement.id ~ '"' %}
+
+        <div class="col" {{ clickAction|raw }}>
+            <div class="card achievement-assign-card" {{ clickAction|raw }}>
+                <div class="card-body text-center" {{ clickAction|raw }}>
+                    <div {{ clickAction|raw }}>
+                        <h4 class="card-title" {{ clickAction|raw }}>
+                            {{ achievement.title }} ({{ achievement|cost }})
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

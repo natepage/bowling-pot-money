@@ -1,39 +1,22 @@
 <div class="row row-cols-2 g-2">
     {% for sessionMember in sessionMembers %}
-        <div class="col"
-             data-action="click->achievement-assign#setTeamMemberInputValue"
-             data-member-id="{{ sessionMember.teamMember.id }}"
-        >
-            <div class="card"
-                 data-action="click->achievement-assign#setTeamMemberInputValue"
-                 data-member-id="{{ sessionMember.teamMember.id }}"
-            >
-                <div class="card-body text-center"
-                     data-action="click->achievement-assign#setTeamMemberInputValue"
-                     data-member-id="{{ sessionMember.teamMember.id }}"
-                >
-                    <div class="photo-container"
-                         data-action="click->achievement-assign#setTeamMemberInputValue"
-                         data-member-id="{{ sessionMember.teamMember.id }}"
-                    >
-                        <div class="photo"
-                             data-action="click->achievement-assign#setTeamMemberInputValue"
-                             data-member-id="{{ sessionMember.teamMember.id }}"
-                        >
-                            <img src="{{ sessionMember.teamMember.user.picture }}"
-                                 alt="{{ sessionMember.teamMember.user.name }}"
-                                 data-action="click->achievement-assign#setTeamMemberInputValue"
-                                 data-member-id="{{ sessionMember.teamMember.id }}"
-                            >
-                        </div>
-                    </div>
+        {% set clickAction = 'data-action="click->achievement-assign#setTeamMemberInputValue" data-member-id="' ~ sessionMember.teamMember.id ~ '"' %}
+
+        <div class="col" {{ clickAction|raw }}>
+            <div class="card achievement-assign-card achievement-assign-card-member" {{ clickAction|raw }}>
+                <div class="card-body text-center" {{ clickAction|raw }}>
                     <div>
-                        <h4 class="card-title"
-                            data-action="click->achievement-assign#setTeamMemberInputValue"
-                            data-member-id="{{ sessionMember.teamMember.id }}"
-                        >
-                            {{ sessionMember.teamMember.user.name }}
-                        </h4>
+                        <div class="photo-container" {{ clickAction|raw }}>
+                            <div class="photo" {{ clickAction|raw }}>
+                                <img src="{{ sessionMember.teamMember.user.picture }}"
+                                     alt="{{ sessionMember.teamMember.user.name }}" {{ clickAction|raw }}>
+                            </div>
+                        </div>
+                        <div {{ clickAction|raw }}>
+                            <h4 class="card-title" {{ clickAction|raw }}>
+                                {{ sessionMember.teamMember.user.name }}
+                            </h4>
+                        </div>
                     </div>
                 </div>
             </div>

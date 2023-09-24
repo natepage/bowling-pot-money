@@ -17,5 +17,11 @@
                 path('_frame_achievement_assign_member', {'teamId': team.id, 'sessionId': session.id})
             ) }}
         </div>
+        <div class="achievement-assign-achievement-container">
+            {{ turboFrame(
+                '_frame_achievement_assign_achievement',
+                path('_frame_achievement_assign_achievement', {'teamId': team.id, 'sessionId': session.id})
+            ) }}
+        </div>
     </div>
 {% endblock %}

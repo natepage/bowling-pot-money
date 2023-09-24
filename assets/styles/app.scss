@@ -112,6 +112,23 @@ a.no-decoration-link {
 }
 
 // Session achievement assign
+.achievement-assign-achievement-container {
+  display: none;
+}
+
+.achievement-assign-card {
+  height: 100px;
+
+  .card-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+.achievement-assign-card.achievement-assign-card-member {
+  height: 120px;
+}
+
 .photo-container {
   .photo {
     height: 55px;
