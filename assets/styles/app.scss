@@ -94,6 +94,22 @@ a.no-decoration-link {
   }
 }
 
+// Session floating button
+.session-floating-button-container {
+  position: absolute;
+  bottom: 30px;
+  right: 16px;
+
+  .btn-circle {
+    width: 60px;
+    height: 60px;
+    padding: 13px 18px;
+    border-radius: 20px;
+    font-size: 15px;
+    text-align: center;
+  }
+}
+
 // TurboFrame
 .frame-loader-container {
   width: 100%;
