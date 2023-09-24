@@ -7,6 +7,7 @@ use App\Controller\Web\AbstractWebController;
 use App\Form\CreateSessionForm;
 use App\Repository\TeamRepository;
 use App\Session\SessionManager;
+use EonX\EasyErrorHandler\Interfaces\ErrorHandlerInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,12 +22,15 @@ final class SessionCreateController extends AbstractWebController
 {
     public function __construct(
         private readonly TeamRepository $teamRepository,
-        private readonly SessionManager $sessionManager
+        private readonly SessionManager $sessionManager,
+        private readonly ErrorHandlerInterface $errorHandler,
     ) {
     }
 
     public function __invoke(Request $request, string $teamId): Response
     {
+        $this->errorHandler->report(new \RuntimeException('debug post request'));
+
         $team = $this->teamRepository->find($teamId);
 
         $form = $this
