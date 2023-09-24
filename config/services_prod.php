@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Infrastructure\Bref\AccessLogListener;
 use App\Infrastructure\Bref\AdminContextAsTwigGlobalListener;
 use App\Infrastructure\EasyAdmin\Asset\PackageDecorator;
 use AsyncAws\DynamoDb\DynamoDbClient;
@@ -15,6 +16,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->defaults()
         ->autowire()
         ->autoconfigure();
+
+    // AccessLog in Cloudwatch
+    $services
+        ->set(AccessLogListener::class)
+        ->tag('kernel.event_listener');
 
     // DynamoDB session handler
     $services->set(DynamoDbClient::class);
