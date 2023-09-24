@@ -35,7 +35,7 @@ final class SessionCreateController extends AbstractWebController
             ->createForm(CreateSessionForm::class)
             ->handleRequest($request);
 
-        if ($form->isValid() === false) {
+        if ($form->isSubmitted() && $form->isValid() === false) {
             $form->addError(new FormError('form not valid'));
         }
 
