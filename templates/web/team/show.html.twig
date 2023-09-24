@@ -7,7 +7,9 @@
                 <div class="hstack gap-2">
                     <h5 class="card-title">Sessions</h5>
                     <div class="ms-auto">
-                        <a href="{{ path('teams_create_session', {'teamId': team.id}) }}" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+                        <a href="{{ path('teams_create_session', {'teamId': team.id}) }}" class="btn btn-primary">
+                            <i class="fa fa-plus"></i>
+                        </a>
                     </div>
                 </div>
                 {{ turboFrame('_frame_sessions_list', path('_frame_sessions_list', {'teamId': team.id})) }}
@@ -19,6 +21,21 @@
             <div class="card-body">
                 <h5 class="card-title">Members</h5>
                 {{ turboFrame('_frame_team_members_list', path('_frame_team_members_list', {'teamId': team.id})) }}
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <div class="hstack gap-2">
+                    <h5 class="card-title">Achievements</h5>
+                    <div class="ms-auto">
+                        <a href="{{ path('teams_create_achievement', {'teamId': team.id}) }}" class="btn btn-primary">
+                            <i class="fa fa-plus"></i>
+                        </a>
+                    </div>
+                </div>
+                {{ turboFrame('_frame_achievements_list', path('_frame_achievements_list', {'teamId': team.id})) }}
             </div>
         </div>
     </div>

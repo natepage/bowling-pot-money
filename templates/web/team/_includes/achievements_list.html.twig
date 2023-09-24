@@ -1,0 +1,48 @@
+{% if achievements|length > 0 %}
+    <div class="table-responsive">
+        <table class="table">
+            <thead class="text-primary">
+            <tr>
+                <th>Title</th>
+                <th>Cost</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for achievement in achievements %}
+                {% set editLink = path('teams_update_achievement', {
+                    'teamId': achievement.team.id,
+                    'achievementId': achievement.id
+                }) %}
+                {% set deleteLink = path('teams_delete_achievement', {
+                    'teamId': achievement.team.id,
+                    'achievementId': achievement.id
+                }) %}
+
+                <tr>
+                    <td>{{ achievement.title }}</td>
+                    <td>{{ achievement|cost }}</td>
+                    <td>
+                        <div class="dropdown">
+                            <a class="btn btn-secondary dropdown-toggle"
+                               href="#"
+                               role="button"
+                               data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ editLink }}" target="_top">Edit</a></li>
+                                <li><a class="dropdown-item" href="{{ deleteLink }}" target="_top">Delete</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="text-center">
+        <span>No achievements yet...</span>
+    </div>
+{% endif %}
