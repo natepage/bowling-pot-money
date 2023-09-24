@@ -7,7 +7,7 @@ use App\Entity\Enum\TeamInviteStatusEnum;
 use App\Entity\Enum\TeamMemberAccessLevelEnum;
 use Carbon\CarbonImmutable;
 
-final class CreateTeamInviteDto
+final class TeamInviteCreateDto
 {
     private TeamMemberAccessLevelEnum $accessLevel;
 

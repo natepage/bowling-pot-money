@@ -9,6 +9,26 @@
     <div class="col">
         <div class="card">
             <div class="card-body">
+                <div class="hstack gap-2">
+                    <h5 class="card-title">Games</h5>
+                    <div class="ms-auto">
+                        <a href="{{ path('teams_create_session_game', {'teamId': team.id, 'sessionId': session.id}) }}" class="btn btn-primary">
+                            New
+                        </a>
+                    </div>
+                </div>
+                <div style="max-height: 400px; overflow-y: auto;">
+                    {{ turboFrame(
+                        '_frame_session_games_list',
+                        path('_frame_session_games_list', {'teamId': team.id, 'sessionId': session.id})
+                    ) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
                 <h5 class="card-title">Members</h5>
                 {{ turboFrame(
                     '_frame_session_members_list',

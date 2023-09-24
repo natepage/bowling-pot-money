@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Controller\Web\Frontend\Team;
 
 use App\Controller\Web\AbstractWebController;
-use App\Form\CreateSessionForm;
+use App\Form\SessionCreateForm;
 use App\Repository\TeamRepository;
 use App\Session\SessionManager;
 use App\Session\SessionMemberManager;
@@ -34,11 +34,11 @@ final class SessionCreateController extends AbstractWebController
         $team = $this->teamRepository->find($teamId);
 
         $form = $this
-            ->createForm(CreateSessionForm::class, options: ['teamId' => $teamId])
+            ->createForm(SessionCreateForm::class, options: ['teamId' => $teamId])
             ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var \App\Form\Dto\CreateSessionDto $data */
+            /** @var \App\Form\Dto\SessionCreateDto $data */
             $data = $form->getData();
 
             try {

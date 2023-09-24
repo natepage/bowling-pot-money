@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use App\Form\Dto\CreateSessionDto;
+use App\Form\Dto\SessionCreateDto;
 use App\Repository\TeamMemberRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -11,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class CreateSessionForm extends AbstractType
+final class SessionCreateForm extends AbstractType
 {
     public function __construct(
         private readonly TeamMemberRepository $teamMemberRepository,
@@ -43,7 +43,7 @@ final class CreateSessionForm extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => CreateSessionDto::class,
+            'data_class' => SessionCreateDto::class,
             'teamId' => null,
         ]);
     }

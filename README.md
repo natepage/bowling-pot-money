@@ -24,7 +24,7 @@
 - [X] Create invitation link for Team per email (once-off, expiry, support existing user)
 - [ ] Automatic expiry for invitation links
 - [ ] Send invite emails async
-- [ ] Restrict to max 10 members per team
+- [X] Restrict to max 10 members per team
 - [ ] Allow team admin to cancel invite
 
 ## Achievements
@@ -49,6 +49,6 @@
 
 ## Games
 
-- [ ] Game must belong to a SessionMember
-- [ ] SessionMember cannot have more than one opened game at a time
+- [X] Game must belong to a SessionMember
+- [X] SessionMember cannot have more than one opened game at a time
 - [ ] Game must have a score before it can be closed

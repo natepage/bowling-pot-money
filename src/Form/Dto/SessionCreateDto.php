@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Dto;
 
-final class CreateSessionDto
+final class SessionCreateDto
 {
     /**
      * @var string[]
@@ -22,7 +22,7 @@ final class CreateSessionDto
     /**
      * @param string[] $memberIds
      */
-    public function setMemberIds(array $memberIds): CreateSessionDto
+    public function setMemberIds(array $memberIds): SessionCreateDto
     {
         $this->memberIds = $memberIds;
         return $this;

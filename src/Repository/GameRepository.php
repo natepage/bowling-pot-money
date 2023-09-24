@@ -30,6 +30,19 @@ final class GameRepository extends AbstractOptimizedDoctrineOrmRepository
     /**
      * @return \App\Entity\Game[]
      */
+    public function findBySessionId(string $sessionId): array
+    {
+        return $this->getRepository()->createQueryBuilder('g')
+            ->where('g.session = :sessionId')
+            ->setParameter('sessionId', $sessionId)
+            ->orderBy('g.createdAt', 'desc')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return \App\Entity\Game[]
+     */
     public function findUnfinishedGamesBySessionId(string $sessionId): array
     {
         $queryBuilder = $this->createQueryBuilder('g');

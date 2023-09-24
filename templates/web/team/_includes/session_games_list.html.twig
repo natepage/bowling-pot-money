@@ -1,0 +1,40 @@
+{% if games|length > 0 %}
+<div class="table-responsive">
+    <table class="table">
+        <thead class="text-primary">
+        <tr>
+            <th>Member</th>
+            <th>Status</th>
+            <th>Score</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for game in games %}
+            <tr>
+                <td>{{ game.teamMember.user.name }}</td>
+                <td>{{ renderComponentBadge(game.status) }}</td>
+                <td>
+                    {% if game.opened %}
+                        {% set setScoreLink = path('teams_game_set_score', {
+                            'teamId': game.session.team.id,
+                            'sessionId': game.session.id,
+                            'gameId': game.id
+                        }) %}
+
+                        <a href="{{ setScoreLink }}" class="link-no-style" target="_top">
+                            {{ game.score is not null ? game.score : '-' }}
+                        </a>
+                    {% else %}
+                        {{ game.score is not null ? game.score : '-' }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="text-center">
+    <span>No games yet...</span>
+</div>
+{% endif %}

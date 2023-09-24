@@ -22,6 +22,11 @@ class Game extends AbstractEntity
     #[ORM\ManyToOne(targetEntity: TeamMember::class)]
     private TeamMember $teamMember;
 
+    public function isOpened(): bool
+    {
+        return $this->status === GameStatusEnum::OPENED;
+    }
+
     public function getScore(): ?int
     {
         return $this->score;

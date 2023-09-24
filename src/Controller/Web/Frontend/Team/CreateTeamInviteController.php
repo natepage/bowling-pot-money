@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace App\Controller\Web\Frontend\Team;
 
 use App\Controller\Web\TurboFrame\AbstractTurboFrameController;
-use App\Form\CreateTeamInviteForm;
-use App\Form\Dto\CreateTeamInviteDto;
+use App\Form\TeamInviteCreateForm;
+use App\Form\Dto\TeamInviteCreateDto;
 use App\Repository\TeamRepository;
 use App\Team\TeamInvite\TeamInviteFactory;
 use App\Team\TeamInvite\TeamInvitePersister;
@@ -31,7 +31,7 @@ final class CreateTeamInviteController extends AbstractTurboFrameController
         $team = $this->teamRepository->find($teamId);
 
         $form = $this
-            ->createForm(CreateTeamInviteForm::class, new CreateTeamInviteDto())
+            ->createForm(TeamInviteCreateForm::class, new TeamInviteCreateDto())
             ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
