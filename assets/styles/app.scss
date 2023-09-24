@@ -96,9 +96,10 @@ a.no-decoration-link {
 
 // Session floating button
 .session-floating-button-container {
-  position: absolute;
+  position: fixed;
   bottom: 30px;
   right: 16px;
+  z-index: 1000;
 
   .btn-circle {
     width: 60px;

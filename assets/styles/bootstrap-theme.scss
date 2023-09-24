@@ -73,25 +73,40 @@ body {
   background: #e14eca linear-gradient(to bottom left, #e14eca, #ba54f5, #e14eca) 100% 0;
   background-size: 210% 210%;
 }
+.btn-primary:active {
+  background: #ba54f5 linear-gradient(to bottom left, #ba54f5, #e14eca, #ba54f5) 100% 0;
+}
 
 .btn-info {
   background: #1d8cf8 linear-gradient(to bottom left, #1d8cf8,#3358f4,#1d8cf8) 100% 0;
   background-size: 210% 210%;
+}
+.btn-info:active {
+  background: #3358f4 linear-gradient(to bottom left, #3358f4,#1d8cf8,#3358f4) 100% 0;
 }
 
 .btn-success {
   background: #00f2c3 linear-gradient(to bottom left, #00f2c3,#0098f0,#00f2c3) 100% 0;
   background-size: 210% 210%;
 }
+.btn-success:active {
+  background: #0098f0 linear-gradient(to bottom left, #0098f0,#00f2c3,#0098f0) 100% 0;
+}
 
 .btn-warning {
   background: #ff8d72 linear-gradient(to bottom left, #ff8d72,#ff6491,#ff8d72) 100% 0;
   background-size: 210% 210%;
 }
+.btn-warning:active {
+  background: #ff6491 linear-gradient(to bottom left, #ff6491,#ff8d72,#ff6491) 100% 0;
+}
 
 .btn-danger {
   background: #fd5d93 linear-gradient(to bottom left, #fd5d93,#ec250d,#fd5d93) 100% 0;
   background-size: 210% 210%;
+}
+.btn-danger:active {
+  background: #ec250d linear-gradient(to bottom left, #ec250d,#fd5d93,#ec250d) 100% 0;
 }
 
 // ---- Cards ----

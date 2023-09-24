@@ -1,5 +1,14 @@
 {% extends 'web/team/layout_team.html.twig' %}
 
+{% block before_content %}
+    {# Floating button #}
+    <div class="session-floating-button-container">
+        <button class="btn btn-success btn-circle">
+            <i class="fa fa-plus fa-2x"></i>
+        </button>
+    </div>
+{% endblock %}
+
 {% block team_body %}
     <div class="col">
         <h2 class="team-show-title">
@@ -38,11 +47,14 @@
         </div>
     </div>
     <div class="col">
-        {# Floating button #}
-        <div class="session-floating-button-container">
-            <button class="btn btn-success btn-circle">
-                <i class="fa fa-plus fa-2x"></i>
-            </button>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Members</h5>
+                {{ turboFrame(
+                    '_frame_session_members_list',
+                    path('_frame_session_members_list', {'teamId': team.id, 'sessionId': session.id})
+                ) }}
+            </div>
         </div>
     </div>
 {% endblock %}
