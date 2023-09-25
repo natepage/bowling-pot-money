@@ -11,6 +11,24 @@
     <div class="col achievement-assign-container" data-controller="achievement-assign">
         {{ form(form) }}
 
+        <div class="achievement-assign-confirm-container">
+            <div class="row">
+                <div class="col-8">
+                    <p>
+                        Member: <span class="achievement-assign-member-confirm-text"></span>
+                    </p>
+                    <p>
+                        Achievement: <span class="achievement-assign-achievement-confirm-text"></span>
+                    </p>
+                </div>
+                <div class="col-4">
+                    <button class="btn btn-secondary" data-action="click->achievement-assign#reset">
+                        Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <div class="achievement-assign-member-container">
             {{ turboFrame(
                 '_frame_achievement_assign_member',
@@ -22,6 +40,12 @@
                 '_frame_achievement_assign_achievement',
                 path('_frame_achievement_assign_achievement', {'teamId': team.id, 'sessionId': session.id})
             ) }}
+        </div>
+
+        <div class="achievement-assign-submit-container text-center">
+            <button class="btn btn-primary" data-action="click->achievement-assign#submit">
+                Submit
+            </button>
         </div>
     </div>
 {% endblock %}

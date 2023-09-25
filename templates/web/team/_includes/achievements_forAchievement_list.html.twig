@@ -1,6 +1,9 @@
 <div class="row row-cols-2 g-2">
     {% for achievement in achievements %}
-        {% set clickAction = 'data-action="click->achievement-assign#setAchievementInputValue" data-achievement-id="' ~ achievement.id ~ '"' %}
+        {% set clickAction = 'data-action="click->achievement-assign#setAchievementInputValue"'
+            ~ ' data-achievement-id="' ~ achievement.id ~ '"'
+            ~ ' data-achievement-title="' ~ achievement.title ~ ' (' ~ achievement|cost ~ ')"'
+        %}
 
         <div class="col" {{ clickAction|raw }}>
             <div class="card achievement-assign-card" {{ clickAction|raw }}>

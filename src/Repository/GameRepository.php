@@ -27,6 +27,25 @@ final class GameRepository extends AbstractOptimizedDoctrineOrmRepository
             ->execute();
     }
 
+    public function findOneUnfinishedBySessionIdAndTeamMemberId(string $sessionId, string $teamMemberId): ?Game
+    {
+        $queryBuilder = $this->createQueryBuilder('g');
+        $expr = $queryBuilder->expr();
+
+        $results = $queryBuilder
+            ->where($expr->eq('g.session', ':sessionId'))
+            ->andWhere($expr->eq('g.teamMember', ':teamMemberId'))
+            ->andWhere($expr->eq('g.status', ':status'))
+            ->andWhere($expr->isNull('g.score'))
+            ->setParameter('sessionId', $sessionId)
+            ->setParameter('teamMemberId', $teamMemberId)
+            ->setParameter('status', GameStatusEnum::OPENED)
+            ->getQuery()
+            ->getResult();
+
+        return $results[0] ?? null;
+    }
+
     /**
      * @return \App\Entity\Game[]
      */

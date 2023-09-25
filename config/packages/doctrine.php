@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Infrastructure\Doctrine\Dbal\Type\CarbonImmutableType;
+use App\Infrastructure\Doctrine\Dbal\Type\FinancialActivityTypeType;
 use App\Infrastructure\Doctrine\Dbal\Type\GameStatusType;
 use App\Infrastructure\Doctrine\Dbal\Type\SessionStatusType;
 use App\Infrastructure\Doctrine\Dbal\Type\TeamInviteStatusType;
@@ -16,6 +17,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'url' => '%env(resolve:DATABASE_URL)%',
             'types' => [
                 GameStatusType::NAME => GameStatusType::class,
+                FinancialActivityTypeType::NAME => FinancialActivityTypeType::class,
                 SessionStatusType::NAME => SessionStatusType::class,
                 Types::DATETIME_IMMUTABLE => CarbonImmutableType::class,
                 TeamInviteStatusType::NAME => TeamInviteStatusType::class,

@@ -1,6 +1,9 @@
 <div class="row row-cols-2 g-2">
     {% for sessionMember in sessionMembers %}
-        {% set clickAction = 'data-action="click->achievement-assign#setTeamMemberInputValue" data-member-id="' ~ sessionMember.teamMember.id ~ '"' %}
+        {% set clickAction = 'data-action="click->achievement-assign#setTeamMemberInputValue"'
+            ~ ' data-member-id="' ~ sessionMember.teamMember.id ~ '"'
+            ~ ' data-member-name="' ~ sessionMember.teamMember.user.name ~ '"'
+        %}
 
         <div class="col" {{ clickAction|raw }}>
             <div class="card achievement-assign-card achievement-assign-card-member" {{ clickAction|raw }}>

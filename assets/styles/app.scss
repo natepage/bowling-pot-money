@@ -112,8 +112,12 @@ a.no-decoration-link {
 }
 
 // Session achievement assign
-.achievement-assign-achievement-container {
+.achievement-assign-achievement-container, .achievement-assign-confirm-container, .achievement-assign-submit-container {
   display: none;
+}
+
+.achievement-assign-confirm-container {
+  margin-bottom: 16px;
 }
 
 .achievement-assign-card {
