@@ -61,7 +61,7 @@ abstract class AbstractSymfonyHttpKernel extends Kernel
         }
 
         $startTime = \microtime(true);
-        $cacheDirectoriesToCopy = [];
+        $cacheDirectoriesToCopy = ['pools'];
         $filesystem = new Filesystem;
         $filesystem->mkdir($writeDir);
 
