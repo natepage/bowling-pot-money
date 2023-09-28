@@ -18,8 +18,13 @@ final class TurboFrameTwigExtension extends AbstractExtension
     public function renderTurboFrame(string $id, string $src, ?array $options = null): string
     {
         $output = \sprintf('<turbo-frame id="%s" src="%s"', $id, $src);
+        $attrs = $options['attrs'] ?? [];
 
-        foreach ($options['attrs'] ?? [] as $name => $value) {
+        if ($options['cache'] ?? true) {
+            $attrs['data-controller'] = \sprintf('%s cache-turbo-frame', $attrs['data-controller'] ?? '');
+        }
+
+        foreach ($attrs as $name => $value) {
             $output .= \sprintf(' %s="%s"', $name, $value);
         }
 

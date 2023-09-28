@@ -12,7 +12,10 @@
                         </a>
                     </div>
                 </div>
-                {{ turboFrame('_frame_sessions_list', path('_frame_sessions_list', {'teamId': team.id})) }}
+                {{ turboFrame(
+                    '_frame_sessions_list_' ~ team.id,
+                    path('_frame_sessions_list', {'teamId': team.id})
+                ) }}
             </div>
         </div>
     </div>
@@ -20,7 +23,10 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Members</h5>
-                {{ turboFrame('_frame_team_members_list', path('_frame_team_members_list', {'teamId': team.id})) }}
+                {{ turboFrame(
+                    '_frame_team_members_list_' ~ team.id,
+                    path('_frame_team_members_list', {'teamId': team.id})
+                ) }}
             </div>
         </div>
     </div>
@@ -35,7 +41,10 @@
                         </a>
                     </div>
                 </div>
-                {{ turboFrame('_frame_achievements_list', path('_frame_achievements_list', {'teamId': team.id})) }}
+                {{ turboFrame(
+                    '_frame_achievements_list_' ~ team.id,
+                    path('_frame_achievements_list', {'teamId': team.id})
+                ) }}
             </div>
         </div>
     </div>
