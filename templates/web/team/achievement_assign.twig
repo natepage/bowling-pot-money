@@ -32,13 +32,15 @@
         <div class="achievement-assign-member-container">
             {{ turboFrame(
                 '_frame_achievement_assign_member',
-                path('_frame_achievement_assign_member', {'teamId': team.id, 'sessionId': session.id})
+                path('_frame_achievement_assign_member', {'teamId': team.id, 'sessionId': session.id}),
+                {'attrs': {'data-controller': 'cache-turbo-frame'}}
             ) }}
         </div>
         <div class="achievement-assign-achievement-container">
             {{ turboFrame(
                 '_frame_achievement_assign_achievement',
-                path('_frame_achievement_assign_achievement', {'teamId': team.id, 'sessionId': session.id})
+                path('_frame_achievement_assign_achievement', {'teamId': team.id, 'sessionId': session.id}),
+                {'attrs': {'data-controller': 'cache-turbo-frame'}}
             ) }}
         </div>
 
