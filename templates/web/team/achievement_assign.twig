@@ -1,5 +1,11 @@
 {% extends 'web/team/layout_team.html.twig' %}
 
+{% block page_head %}
+    {{ parent() }}
+
+    <meta name="turbo-cache-control" content="no-cache">
+{% endblock %}
+
 {% block team_body %}
     <div class="col">
         <h2 class="team-show-title">
