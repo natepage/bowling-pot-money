@@ -18,6 +18,8 @@ final class FinancialActivityRepository extends AbstractOptimizedDoctrineOrmRepo
             updated_at = NOW()
         WHERE id = ':teamMemberId';
 
+        :updateGameSql
+
         INSERT INTO financial_activity
         SELECT ':financialActivityId' AS id,
                ':teamId' AS team_id,
@@ -39,12 +41,21 @@ final class FinancialActivityRepository extends AbstractOptimizedDoctrineOrmRepo
     COMMIT;
 SQL;
 
+    private const UPDATE_GAME_BALANCE_SQL = <<<SQL
+    UPDATE game
+    SET balance = balance + :value,
+        updated_at = NOW()
+    WHERE id = ':gameId';
+SQL;
+
+
     public function createSafelyFinancialActivity(FinancialActivityCreateDto $data): void
     {
         $conn = $this->getManager()->getConnection();
         $sql = self::CREATE_FINANCIAL_ACTIVITY_SQL;
 
         $mapping = [
+            ':updateGameSql' => $data->getGameId() !== null ? self::UPDATE_GAME_BALANCE_SQL : '',
             ':createdById' => $data->getCreatedById(),
             ':financialActivityId' => $data->getId(),
             ':gameId' => $data->getGameId(),
