@@ -49,12 +49,20 @@ final class GameRepository extends AbstractOptimizedDoctrineOrmRepository
     /**
      * @return \App\Entity\Game[]
      */
-    public function findBySessionId(string $sessionId): array
+    public function findBySessionId(string $sessionId, ?GameStatusEnum $status = null): array
     {
-        return $this->getRepository()->createQueryBuilder('g')
+        $queryBuilder = $this->getRepository()->createQueryBuilder('g')
             ->where('g.session = :sessionId')
             ->setParameter('sessionId', $sessionId)
-            ->orderBy('g.createdAt', 'desc')
+            ->orderBy('g.createdAt', 'desc');
+
+        if ($status !== null) {
+            $queryBuilder
+                ->andWhere('g.status = :status')
+                ->setParameter('status', $status->value);
+        }
+
+        return $queryBuilder
             ->getQuery()
             ->getResult();
     }

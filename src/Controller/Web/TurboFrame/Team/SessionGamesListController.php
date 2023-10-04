@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Web\TurboFrame\Team;
 
 use App\Controller\Web\TurboFrame\AbstractTurboFrameController;
+use App\Entity\Enum\GameStatusEnum;
 use App\Repository\GameRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,9 +23,14 @@ final class SessionGamesListController extends AbstractTurboFrameController
     ) {
     }
 
-    public function __invoke(string $teamId, string $sessionId): Response
+    public function __invoke(Request $request, string $teamId, string $sessionId): Response
     {
-        $games = $this->gameRepository->findBySessionId($sessionId);
+        $status = $request->query->get('status');
+        if (\is_string($status) && $status !== '') {
+            $status = GameStatusEnum::tryFrom($status);
+        }
+
+        $games = $this->gameRepository->findBySessionId($sessionId, $status);
 
         return $this->renderFrame('web/team/_includes/session_games_list.html.twig', [
             'games' => $games,

@@ -5,11 +5,16 @@ namespace App\Entity;
 
 use App\Entity\Enum\GameStatusEnum;
 use App\Infrastructure\Doctrine\Dbal\Type\GameStatusType;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\Index(columns: ['session_id', 'status'])]
 class Game extends AbstractEntity
 {
+    #[ORM\Column(type: Types::BIGINT, options: ['default' => 0])]
+    private string $balance = '0';
+
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $score = null;
 
@@ -21,6 +26,17 @@ class Game extends AbstractEntity
 
     #[ORM\ManyToOne(targetEntity: TeamMember::class)]
     private TeamMember $teamMember;
+
+    public function getBalance(): string
+    {
+        return $this->balance;
+    }
+
+    public function setBalance(string $balance): Game
+    {
+        $this->balance = $balance;
+        return $this;
+    }
 
     public function isOpened(): bool
     {

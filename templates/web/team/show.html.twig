@@ -12,10 +12,12 @@
                         </a>
                     </div>
                 </div>
-                {{ turboFrame(
-                    '_frame_sessions_list_' ~ team.id,
-                    path('_frame_sessions_list', {'teamId': team.id})
-                ) }}
+                <div class="card-with-btn-content-container">
+                    {{ turboFrame(
+                        '_frame_sessions_list_' ~ team.id,
+                        path('_frame_sessions_list', {'teamId': team.id})
+                    ) }}
+                </div>
             </div>
         </div>
     </div>
@@ -41,10 +43,12 @@
                         </a>
                     </div>
                 </div>
-                {{ turboFrame(
-                    '_frame_achievements_list_' ~ team.id,
-                    path('_frame_achievements_list', {'teamId': team.id})
-                ) }}
+                <div class="card-with-btn-content-container">
+                    {{ turboFrame(
+                        '_frame_achievements_list_' ~ team.id,
+                        path('_frame_achievements_list', {'teamId': team.id})
+                    ) }}
+                </div>
             </div>
         </div>
     </div>

@@ -4,7 +4,7 @@
         <thead class="text-primary">
         <tr>
             <th>Member</th>
-            <th>Status</th>
+            <th>Balance</th>
             <th>Score</th>
         </tr>
         </thead>
@@ -12,7 +12,7 @@
         {% for game in games %}
             <tr>
                 <td>{{ game.teamMember.user.name }}</td>
-                <td>{{ renderComponentBadge(game.status) }}</td>
+                <td>{{ game|balance }}</td>
                 <td>
                     {% if game.opened %}
                         {% set setScoreLink = path('teams_game_set_score', {
